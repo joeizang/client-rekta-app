@@ -3,17 +3,12 @@ import { useForm } from 'react-hook-form';
 import {
   Button,
   Card,
-  Col,
-  Form,
   FormControl,
   FormLabel,
   FormGroup,
   Modal,
-  ModalBody,
-  Row,
-  Tooltip,
-  OverlayTrigger,
-} from 'react-bootstrap';
+  Tooltip, Dialog, CardContent, CardHeader, Input, Select, TextField,
+} from '@material-ui/core';
 import axios from 'axios';
 import CreateCategory from '../category/CreateCategory';
 import { CATEGORY_URL, INVENTORY_URL } from '../../constants';
@@ -37,7 +32,7 @@ interface formData {
   categories: ICategory[];
 }
 
-const AddInventory: FC<formData> = ({ categories }) => {
+export const AddInventory: FC<formData> = ({ categories }) => {
   const { register, handleSubmit, errors } = useForm<CreateInventoryProp>();
   // TODO: FIX MODAL FOR CATEGORY CREATION
   const [dropDown, setDropDown] = useState([]);
@@ -84,16 +79,16 @@ const AddInventory: FC<formData> = ({ categories }) => {
   return (
     <Fragment>
       <Card className="shadow-lg mb-5 bg-white rounded">
-        <Card.Header as="h3" className="text-center">
+        <CardContent>
+        <CardHeader as="h3" className="text-center">
           Create Inventory
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit(doSubmit)}>
+        </CardHeader>
+          <form onSubmit={handleSubmit(doSubmit)}>
             <FormGroup>
               <FormLabel>
                 Inventory Name <span className="text-danger">*</span>
               </FormLabel>
-              <FormControl
+              <Input
                 id="inventoryName"
                 type="text"
                 name="name"
@@ -111,7 +106,7 @@ const AddInventory: FC<formData> = ({ categories }) => {
               <FormLabel>
                 Supply Date <span className="text-danger">*</span>
               </FormLabel>
-              <FormControl
+              <Input
                 id="supplyDate"
                 type="date"
                 name="supplyDate"
@@ -127,7 +122,7 @@ const AddInventory: FC<formData> = ({ categories }) => {
               <FormLabel>
                 Batch Number <span className="text-danger">*</span>
               </FormLabel>
-              <FormControl
+              <Input
                 id="batchNumber"
                 type="text"
                 name="batchNumber"
@@ -144,13 +139,10 @@ const AddInventory: FC<formData> = ({ categories }) => {
               ) : null}
             </FormGroup>
             <FormGroup inlist="true">
-              <Row>
-                <Col sm="3">
                   <FormLabel>
                     Inventory Category <span className="text-danger">*</span>
                   </FormLabel>
-                  <FormControl
-                    as="select"
+                  <Select
                     name="categoryName"
                     ref={register({ required: true })}
                     className="py-2"
@@ -161,41 +153,19 @@ const AddInventory: FC<formData> = ({ categories }) => {
                           {value.categoryName}
                         </option>
                       ))}
-                  </FormControl>
+                  </Select>
                   {errors.categoryName ? (
                     <span className="text-danger">
                       {errors.categoryName.message}
                     </span>
                   ) : null}
-                </Col>
-                <Col sm="3" style={{ marginLeft: 15, paddingTop: '1.3em' }}>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 100, hide: 700 }}
-                    overlay={
-                      <Tooltip id="new-category-tooltip">
-                        Add new Category
-                      </Tooltip>
-                    }
-                  >
-                    <Button
-                      onClick={showModal}
-                      className="font-weight-bold mx-auto"
-                      variant="dark"
-                      style={{ marginLeft: 0, marginTop: 10 }}
-                      id="addCategory"
-                    >
-                      +
-                    </Button>
-                  </OverlayTrigger>
-                </Col>
-              </Row>
+                
             </FormGroup>
             <FormGroup>
               <FormLabel>
                 Product Quantity <span className="text-danger">*</span>
               </FormLabel>
-              <FormControl
+              <Input
                 name="productQuantity"
                 type="number"
                 ref={register({
@@ -214,12 +184,12 @@ const AddInventory: FC<formData> = ({ categories }) => {
               <FormLabel>
                 Description <span className="text-danger">*</span>
               </FormLabel>
-              <FormControl
+              <Input
                 id="inventoryDescription"
-                as="textarea"
+                multiline
                 name="description"
                 placeholder="Inventory Description..."
-                ref={register({
+                inputRef={register({
                   required: 'Please add a description for this inventory!',
                 })}
               />
@@ -230,28 +200,27 @@ const AddInventory: FC<formData> = ({ categories }) => {
               ) : null}
             </FormGroup>
             <FormGroup>
-              <Button type="submit" color="primary" block>
+              <Button type="submit" color="primary">
                 <span>
                   <b>Create</b>
                 </span>
               </Button>
             </FormGroup>
-          </Form>
-        </Card.Body>
+          </form>
+        </CardContent>
       </Card>
 
-      <div>
-        <Modal show={!showModal} onHide={showModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>ADD</Modal.Title>
-          </Modal.Header>
-          <ModalBody>
-            <CreateCategory />
-          </ModalBody>
-        </Modal>
-      </div>
+      {/*<div>*/}
+      {/*  <Dialog show={!showModal} onHide={showModal}>*/}
+      {/*    <Modal.Header closeButton>*/}
+      {/*      <Modal.Title>ADD</Modal.Title>*/}
+      {/*    </Modal.Header>*/}
+      {/*    <ModalBody>*/}
+      {/*      <CreateCategory />*/}
+      {/*    </ModalBody>*/}
+      {/*  </Dialog>*/}
+      {/*</div>*/}
     </Fragment>
   );
 };
 
-export default AddInventory;

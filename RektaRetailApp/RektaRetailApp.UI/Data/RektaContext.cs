@@ -8,10 +8,13 @@ namespace RektaRetailApp.UI.Data
 {
     public class RektaContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        private IOptions<OperationalStoreOptions> OperationalStoreOptions { get; }
+
         public RektaContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+            OperationalStoreOptions = operationalStoreOptions;
         }
 
         public DbSet<Sale> Sales { get; set; } = default!;

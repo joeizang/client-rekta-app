@@ -1,14 +1,7 @@
 import React, { FC } from "react";
-import {
-  Button,
-  Card,
-  Form,
-  FormGroup,
-  FormControl,
-  FormLabel,
-} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import {Button, Card, CardContent, FormControl, FormGroup, FormLabel, Input, Typography} from "@material-ui/core";
 interface createCategoryProp {
   name?: string;
   description?: string;
@@ -19,13 +12,12 @@ const CreateCategory: FC<createCategoryProp> = () => {
   return (
     <>
       <Card>
-        <Card.Header color="primary">
-          <Card.Title className="text-center font-weight-bold">
-            <h3>Create Category</h3>
-          </Card.Title>
-        </Card.Header>
-        <Card.Body>
-          <Form
+        <CardContent>
+          <Typography color="primary" variant={"h3"} className="text-center font-weight-bold">
+            Create Category
+          </Typography>
+          <hr/>
+          <form
             onSubmit={handleSubmit(async (data, evt) => {
               await axios.post("https://localhost:5001/api/categories", data);
               // @ts-ignore
@@ -34,7 +26,7 @@ const CreateCategory: FC<createCategoryProp> = () => {
           >
             <FormGroup>
               <FormLabel>Category Name</FormLabel>
-              <FormControl
+              <Input
                 name="name"
                 type="text"
                 id="categoryName"
@@ -49,7 +41,7 @@ const CreateCategory: FC<createCategoryProp> = () => {
 
             <FormGroup>
               <FormLabel>Category Description</FormLabel>
-              <FormControl
+              <Input
                 name="description"
                 type="textarea"
                 id="categoryDescription"
@@ -59,14 +51,14 @@ const CreateCategory: FC<createCategoryProp> = () => {
             </FormGroup>
 
             <FormGroup>
-              <Button type="submit" color="primary" block>
+              <Button type="submit" color="primary">
                 <span>
                   <b>Create Category</b>
                 </span>
               </Button>
             </FormGroup>
-          </Form>
-        </Card.Body>
+          </form>
+        </CardContent>
       </Card>
     </>
   );

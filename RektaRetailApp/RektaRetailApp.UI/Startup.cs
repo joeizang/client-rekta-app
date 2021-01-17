@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -31,13 +32,15 @@ namespace RektaRetailApp.UI
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddDbContext<RektaContext>(options =>
-          options.UseNpgsql(
+          options
+            .UseNpgsql(
               Configuration.GetConnectionString("NpgsqlConnection")).EnableSensitiveDataLogging());
 
       services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
           .AddEntityFrameworkStores<RektaContext>();
 
-      //services.AddAutoMapper(typeof(Startup).Assembly);
+      services.AddAutoMapper(typeof(Startup).Assembly);
+      
 
       services.AddMediatR(typeof(Startup).Assembly);
 

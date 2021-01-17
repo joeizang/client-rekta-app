@@ -1,15 +1,13 @@
 import React, { Component, Suspense } from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
+import Layout from './components/Layout'
 import { Home } from './components/Home';
 //import AuthorizeRoute from "./components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 import CreateCategory from './pages/category/CreateCategory';
-import SalesDashboard from './pages/sales/salesDashboard';
-import './custom.css';
-import './bootstrap.min.css';
-import AddInventory from './pages/inventory/AddInventory';
+import {SalesDashboard} from './pages/sales';
+import {AddInventory} from './pages/inventory';
 import { CreateSupplier, DetailSupplier } from './pages/suppliers';
 import { CreateProduct } from './pages/products';
 
@@ -17,7 +15,7 @@ import { CreateProduct } from './pages/products';
 // const CreateCategory = lazy(() => import("./pages/category/CreateCategory"));
 // const SalesDashboard = lazy(() => import("./pages/sales/salesDashboard"));
 
-export default class App extends Component {
+export default class App extends Component<any, any> {
   static displayName = App.name;
 
   render() {

@@ -29,14 +29,14 @@ export class Login extends Component<IProps, IState> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const action = this.props.action;
     switch (action) {
       case LoginActions.Login:
-        this.login(this.getReturnUrl(this.state));
+        await this.login(this.getReturnUrl(this.state));
         break;
       case LoginActions.LoginCallback:
-        this.processLoginCallback();
+        await this.processLoginCallback();
         break;
       case LoginActions.LoginFailed:
         const params = new URLSearchParams(window.location.search);

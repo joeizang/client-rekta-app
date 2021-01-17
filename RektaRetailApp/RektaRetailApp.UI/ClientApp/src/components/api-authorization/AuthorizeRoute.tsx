@@ -29,11 +29,11 @@ export default class AuthorizeRoute extends Component<IProps, IState> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._subscription = authService.subscribe(() =>
       this.authenticationChanged()
     );
-    this.populateAuthenticationState();
+    await this.populateAuthenticationState();
   }
 
   componentWillUnmount() {

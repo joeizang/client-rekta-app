@@ -1,12 +1,11 @@
 import React, { FC, Fragment, useState } from 'react';
 import {
   Button,
-  Card,
-  Form,
+  Card, CardContent, CardHeader,
   FormControl,
   FormGroup,
-  FormLabel,
-} from 'react-bootstrap';
+  FormLabel, Input, TextField, Typography,
+} from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
 import { ICreateSupplier } from '../../types/supplierTypes';
@@ -21,24 +20,22 @@ export const CreateSupplier: FC<ICreateSupplier> = () => {
     evt: React.BaseSyntheticEvent<object, any, any> | undefined
   ) => {
     const result = createSupplier(data, evt);
-    if (typeof result === 'string') {
-      setRedirect(true);
-      setLocation(result);
-    }
+    setRedirect(true);
+    setLocation(result);
   };
 
   return (
     <Fragment>
       {redirect && <Redirect to={location} />}
       <Card className="shadow mb-5 bg-white rounded">
-        <Card.Header
+        <CardHeader
           as="h2"
           style={{ backgroundColor: '#1b3e1d', color: 'whitesmoke' }}
         >
-          <Card.Title className="text-center">Add A Supplier</Card.Title>
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit(doSubmit)}>
+          Add A Supplier
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(doSubmit)}>
             <FormGroup>
               <FormLabel>
                 <b>Supplier Name</b>{' '}
@@ -46,8 +43,8 @@ export const CreateSupplier: FC<ICreateSupplier> = () => {
                   <b>*</b>
                 </span>
               </FormLabel>
-              <FormControl
-                ref={register({
+              <TextField
+                inputRef={register({
                   required: 'You need to provide a name for the supplier.',
                   maxLength: 50,
                 })}
@@ -66,15 +63,14 @@ export const CreateSupplier: FC<ICreateSupplier> = () => {
                   <b>*</b>
                 </span>
               </FormLabel>
-              <FormControl
-                ref={register({
+              <TextField
+                inputRef={register({
                   required:
                     'You need to provide a phone or mobile number for the supplier.',
                   maxLength: 100,
                 })}
                 name="phoneNumber"
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                 placeholder="080-1111-2222"
               />
               {errors.phoneNumber && (
@@ -90,14 +86,14 @@ export const CreateSupplier: FC<ICreateSupplier> = () => {
                   <b>*</b>
                 </span>
               </FormLabel>
-              <FormControl
-                ref={register({
+              <TextField
+                inputRef={register({
                   required:
                     'It would be beneficial to add a description about this supplier.',
                   maxLength: 500,
                 })}
                 name="description"
-                as="textarea"
+                multiline
                 placeholder="Add notes unique to this supplier..."
               />
               {errors.description && (
@@ -107,12 +103,12 @@ export const CreateSupplier: FC<ICreateSupplier> = () => {
               )}
             </FormGroup>
             <FormGroup>
-              <Button type="submit" block color="primary">
+              <Button type="submit" color="primary">
                 Create Supplier
               </Button>
             </FormGroup>
-          </Form>
-        </Card.Body>
+          </form>
+        </CardContent>
       </Card>
     </Fragment>
   );

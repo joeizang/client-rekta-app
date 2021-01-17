@@ -32,34 +32,36 @@ export class Logout extends Component<IProps, IState> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const action = this.props.action;
     switch (action) {
       case LogoutActions.Logout:
         if (!!window.history.state.state.local) {
-          this.logout(this.getReturnUrl(this.state));
+          await this.logout(this.getReturnUrl(this.state));
         } else {
           // This prevents regular links to <app>/authentication/logout from triggering a logout
           this.setState({
+            authenticated: false,
             isReady: true,
-            message: "The logout was not initiated from within the page.",
+            message: "The logout was not initiated from within the page."
           });
         }
         break;
       case LogoutActions.LogoutCallback:
-        this.processLogoutCallback();
+        await this.processLogoutCallback();
         break;
       case LogoutActions.LoggedOut:
         this.setState({
+          authenticated: false,
           isReady: true,
-          message: "You successfully logged out!",
+          message: "You successfully logged out!"
         });
         break;
       default:
         throw new Error(`Invalid action '${action}'`);
     }
 
-    this.populateAuthenticationState();
+    await this.populateAuthenticationState();
   }
 
   render() {
@@ -96,13 +98,13 @@ export class Logout extends Component<IProps, IState> {
           await this.navigateToReturnUrl(returnUrl);
           break;
         case AuthenticationResultStatus.Fail:
-          this.setState({ message: result.message });
+          this.setState({authenticated: false, isReady: false, message: result.message });
           break;
         default:
           throw new Error("Invalid authentication result status.");
       }
     } else {
-      this.setState({ message: "You successfully logged out!" });
+      this.setState({authenticated: false, isReady: false, message: "You successfully logged out!" });
     }
   }
 
@@ -118,7 +120,7 @@ export class Logout extends Component<IProps, IState> {
         await this.navigateToReturnUrl(this.getReturnUrl(result.state));
         break;
       case AuthenticationResultStatus.Fail:
-        this.setState({ message: result.message });
+        this.setState({authenticated: false, isReady: false, message: result.message });
         break;
       default:
         throw new Error("Invalid authentication result status.");

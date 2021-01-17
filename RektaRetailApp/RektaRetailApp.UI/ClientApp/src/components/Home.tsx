@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { CardDeck } from 'react-bootstrap';
 import DashboardCard from './DashboardCard';
+import {Paper} from "@material-ui/core";
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -8,10 +8,10 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <CardDeck>
+        <Paper>
           <DashboardCard name="Testing Dash Card" supplyDate={new Date()} />
           <DashboardCard name="Testing Dash Card" supplyDate={new Date()} />
-        </CardDeck>
+        </Paper>
       </div>
     );
   }
