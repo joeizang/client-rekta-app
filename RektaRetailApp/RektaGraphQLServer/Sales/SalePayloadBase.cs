@@ -24,7 +24,7 @@ namespace RektaGraphQLServer.Sales
         public AddSalesPayload(Sale sales) : base(sales)
         {
         }
-        
+
         protected AddSalesPayload(IReadOnlyList<UserError>? errors = null) : base(errors)
         {
         }

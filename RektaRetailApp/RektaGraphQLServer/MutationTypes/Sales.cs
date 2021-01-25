@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HotChocolate.Types.Relay;
 using RektaGraphQLServer.ApiModels;
 using RektaRetailApp.Domain.DomainModels;
 
@@ -14,6 +15,6 @@ namespace RektaGraphQLServer.MutationTypes
         string SalesPersonId,
         SaleType TypeOfSale,
         PaymentType TypeOfPayment,
-        List<ItemSold> ProductSold
+        [ID(nameof(Product))]IReadOnlyList<int> ProductIds
     );
 }

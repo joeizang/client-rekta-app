@@ -27,6 +27,9 @@ namespace RektaGraphQLServer.DataLoader
         {
             await using var dbContext = _dbContextFactory.CreateDbContext();
             return await dbContext.Products.Where(p => keys.Contains(p.Id))
+                .Include(p => p.Inventory)
+                .Include(p => p.Price)
+                .Include(p => p.Supplier)
                 .ToDictionaryAsync(t => t.Id, cancellationToken)
                 .ConfigureAwait(false);
         }

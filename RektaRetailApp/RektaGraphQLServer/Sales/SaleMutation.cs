@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Types;
+using RektaGraphQLServer.Common;
 using RektaGraphQLServer.Extensions;
 using RektaGraphQLServer.MutationTypes;
 using RektaRetailApp.Domain.Data;
@@ -19,10 +20,11 @@ namespace RektaGraphQLServer.Sales
         {
             var products = new List<Product>();
 
-            foreach (var product in input.ProductSold)
+            foreach (var productId in input.ProductIds)
             {
-                products.Add(new Product());
+                products.Add(new Product{ Id = productId });
             }
+
             var sale = new Sale
             {
                 SaleDate = input.SaleDate,

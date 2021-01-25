@@ -32,13 +32,29 @@ namespace RektaGraphQLServer
             //Add GraphQL Server
             services
                 .AddGraphQLServer()
-                .AddQueryType<Query>()
+                .AddQueryType(descriptor => descriptor.Name("Query"))
+                .AddTypeExtension<SalesQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                 .AddTypeExtension<SaleMutation>()
                 .AddType<SaleType>()
+                .AddType<ProductType>()
+                .AddType<InventoryType>()
+                .AddType<SupplierType>()
+                .AddType<ApplicationUserType>()
+                .AddType<ProductPriceType>()
+                .AddType<ProductCategoryType>()
+                .AddType<CategoryType>()
+                .AddType<CustomerType>()
                 .EnableRelaySupport()
                 .AddDataLoader<SalesByIdDataLoader>()
-                .AddDataLoader<ProductByIdDataLoader>();
+                .AddDataLoader<ProductByIdDataLoader>()
+                .AddDataLoader<ApplicationUserByIdDataLoader>()
+                .AddDataLoader<ProductPriceByIdDataLoader>()
+                .AddDataLoader<ProductCategoryByIdDataLoader>()
+                .AddDataLoader<CustomerByIdDataLoader>()
+                .AddDataLoader<SupplierByIdDataLoader>()
+                .AddDataLoader<InventoryByIdDataLoader>()
+                .AddDataLoader<CategoryByIdDataLoader>();
             // services.AddControllers();
             // services.AddSwaggerGen(c =>
             // {
