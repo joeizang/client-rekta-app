@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.ApiModel.Category;
-using RektaRetailApp.UI.Data;
 
 namespace RektaRetailApp.UI.Services
 {

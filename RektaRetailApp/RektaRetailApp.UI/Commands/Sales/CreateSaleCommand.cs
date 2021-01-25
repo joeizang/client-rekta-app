@@ -54,7 +54,7 @@ namespace RektaRetailApp.UI.Commands.Sales
             {
                 var include = new Expression<Func<Sale, object>>[]
                 {
-                    x => x.ItemsSold
+                    x => x.ProductSold
                 };
                 await _repo.CreateSale(request, cancellationToken).ConfigureAwait(false);
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);

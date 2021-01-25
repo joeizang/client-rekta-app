@@ -6,11 +6,11 @@ using AutoMapper;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.Commands.Sales;
-using RektaRetailApp.UI.Data;
 using RektaRetailApp.UI.Helpers;
 using RektaRetailApp.UI.Queries.Sales;
 
@@ -33,26 +33,27 @@ namespace RektaRetailApp.UI.Services
         {
             var products = _db.Products.Include(p => p.Inventory);
             var sale = _mapper.Map<Sale>(command);
-            var items = _db.ItemsSold;
+            var items = _db.Products;
             //make deductions from the quantity of every product that has been sold
             foreach(var p in command.ProductsSold)
             {
-                var product = await products.SingleOrDefaultAsync(x => x.Id == p.Id,token).ConfigureAwait(false);
+                var product = await products.SingleOrDefaultAsync(x => x.Id == p.Id,token)
+                    .ConfigureAwait(false);
 
                 product.Quantity -= p.Quantity;
                 //if (product.Inventory != null) product.Inventory.Quantity -= p.Quantity;
                 _db.Entry(product).State = EntityState.Modified;
-                var item = new ItemSold
-                {
-                    ItemName = p.ItemName,
-                    Quantity = p.Quantity,
-                    Price = p.Price,
-                    ProductId = product.Id
-                };
-                await items.AddAsync(item, token).ConfigureAwait(false);
+                // var item = new ItemSold
+                // {
+                //     ItemName = p.ItemName,
+                //     Quantity = p.Quantity,
+                //     Price = p.Price,
+                //     ProductId = product.Id
+                // };
+                // await items.AddAsync(item, token).ConfigureAwait(false);
             }
             //if there are any discounts then you can calculate before persisting.
-            sale.ItemsSold.AddRange(items!);
+            sale.ProductSold.AddRange(items!);
             await _set.AddAsync(sale, token).ConfigureAwait(false);
         }
 

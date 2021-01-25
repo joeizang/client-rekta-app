@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RektaRetailApp.Domain.DomainModels;
 
-namespace RektaRetailApp.UI.Data
+namespace RektaRetailApp.Domain.Data
 {
     public class RektaContext : ApiAuthorizationDbContext<ApplicationUser>
     {
@@ -21,11 +21,13 @@ namespace RektaRetailApp.UI.Data
 
         public DbSet<Inventory> Inventories { get; set; } = default!;
 
-        public DbSet<ItemSold> ItemsSold { get; set; } = default!;
-
         public DbSet<Customer> Customers { get; set; } = default!;
 
         public DbSet<Product> Products { get; set; } = default!;
+        
+        public DbSet<ProductPrice> ProductPrices { get; set; } = default!;
+        
+        public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
 
         public DbSet<Shift> WorkerShifts { get; set; } = default!;
 
@@ -37,8 +39,6 @@ namespace RektaRetailApp.UI.Data
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; } = default!;
 
-        public DbSet<SuppliersInventories> SupplierInventories { get; set; } = default!;
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -49,7 +49,9 @@ namespace RektaRetailApp.UI.Data
                 .HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Inventory>()
                 .HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<ItemSold>()
+            builder.Entity<ProductPrice>()
+                .HasQueryFilter(x => x.IsDeleted);
+            builder.Entity<ProductCategory>()
                 .HasQueryFilter(x => x.IsDeleted);
             builder.Entity<Category>()
                 .HasQueryFilter(x => !x.IsDeleted);
@@ -59,27 +61,13 @@ namespace RektaRetailApp.UI.Data
             builder.Entity<ApplicationUser>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<ApplicationRole>().HasQueryFilter(x => !x.IsDeleted);
 
-
-            builder.Entity<SuppliersInventories>()
-                .HasKey(k => new { k.InventoryId, k.SupplierId });
-
-            builder.Entity<SuppliersInventories>()
-                .HasOne(si => si.ProductInventory)
-                .WithMany(i => i.InventorySuppliers)
-                .HasForeignKey(x => x.InventoryId);
-
-            builder.Entity<SuppliersInventories>()
-                .HasOne(x => x.ProductSupplier)
-                .WithMany(s => s.ProductInventories)
-                .HasForeignKey(i => i.SupplierId);
-
             builder.Entity<Inventory>()
                 .HasMany(i => i.InventoryItems)
                 .WithOne().OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ItemSold>()
-                .HasOne(i => i.Product)
-                .WithOne()
+            builder.Entity<Product>()
+                .HasOne(p => p.Price)
+                .WithOne(p => p.Product)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ApplicationUser>()
@@ -88,7 +76,7 @@ namespace RektaRetailApp.UI.Data
                 .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<Sale>()
-                .HasMany(s => s.ItemsSold)
+                .HasMany(s => s.ProductSold)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
             
@@ -102,7 +90,19 @@ namespace RektaRetailApp.UI.Data
                 .WithMany(i => i!.InventoryItems)
                 .HasForeignKey(p => p.InventoryId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
+            builder.Entity<Product>()
+                .HasOne(p => p.Price)
+                .WithOne(p => p.Product)
+                .HasForeignKey<ProductPrice>(p => p.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Supplier>()
+                .HasMany(s => s.ProductsSupplied)
+                .WithOne(p => p.Supplier)
+                .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             builder.Entity<Sale>()
                 .Property(s => s.GrandTotal)
@@ -119,13 +119,13 @@ namespace RektaRetailApp.UI.Data
             builder.Entity<Inventory>()
                 .Property(i => i.TotalRetailValue)
                 .HasColumnType("decimal(12,2)");
-            builder.Entity<Product>()
+            builder.Entity<ProductPrice>()
                 .Property(p => p.RetailPrice)
                 .HasColumnType("decimal(12,2)");
-            builder.Entity<Product>()
+            builder.Entity<ProductPrice>()
                 .Property(p => p.CostPrice)
                 .HasColumnType("decimal(12,2)");
-            builder.Entity<Product>()
+            builder.Entity<ProductPrice>()
                 .Property(p => p.UnitPrice)
                 .HasColumnType("decimal(12,2)");
             builder.Entity<Category>()
@@ -147,8 +147,10 @@ namespace RektaRetailApp.UI.Data
                 .IsUnique();
             builder.Entity<Sale>()
                 .HasIndex(s => s.SaleDate);
-            builder.Entity<ItemSold>()
-                .HasIndex(i => i.ItemName);
+            builder.Entity<ProductPrice>()
+                .HasIndex(p => p.RetailPrice);
+            builder.Entity<ProductCategory>()
+                .HasIndex(p => p.CategoryName);
         }
     }
 }

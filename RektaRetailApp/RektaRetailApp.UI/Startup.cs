@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.ApiModel.Supplier;
-using RektaRetailApp.UI.Data;
 using RektaRetailApp.UI.Helpers;
 using RektaRetailApp.UI.Services;
 
@@ -34,7 +34,8 @@ namespace RektaRetailApp.UI
       services.AddDbContext<RektaContext>(options =>
           options
             .UseNpgsql(
-              Configuration.GetConnectionString("NpgsqlConnection")).EnableSensitiveDataLogging());
+              Configuration.GetConnectionString("NpgsqlConnection"),
+              n => n.MigrationsAssembly("RektaRetailApp.UI")).EnableSensitiveDataLogging());
 
       services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
           .AddEntityFrameworkStores<RektaContext>();

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RektaRetailApp.UI.ApiModel.Category;
 using RektaRetailApp.UI.Commands.Category;
-using RektaRetailApp.UI.Data;
-using RektaRetailApp.UI.Queries;
 using RektaRetailApp.UI.Queries.Category;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

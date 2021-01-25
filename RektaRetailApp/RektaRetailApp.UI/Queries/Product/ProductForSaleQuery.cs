@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.UI.ApiModel;
 using RektaRetailApp.UI.ApiModel.Product;
-using RektaRetailApp.UI.Data;
 
 namespace RektaRetailApp.UI.Queries.Product
 {
@@ -33,7 +33,7 @@ namespace RektaRetailApp.UI.Queries.Product
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Price = p.RetailPrice
+                        Price = p.Price.RetailPrice
                     }).ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
                 var result = new ApiModel.Response<IEnumerable<ProductsForSaleApiModel>>(work, ResponseStatus.Success);

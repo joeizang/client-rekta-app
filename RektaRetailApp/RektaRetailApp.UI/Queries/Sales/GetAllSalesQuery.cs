@@ -70,14 +70,14 @@ namespace RektaRetailApp.UI.Queries.Sales
                         TypeOfSale = sales[i].TypeOfSale
                     };
 
-                    for (var j = 0; j < sales[i].ItemsSold.Count; j++)
+                    for (var j = 0; j < sales[i].ProductSold.Count; j++)
                     {
                         var item = new ItemSoldApiModel
                         {
-                            Id = sales[i].ItemsSold[j].Id,
-                            ItemName = sales[i].ItemsSold[j].ItemName,
-                            Price = sales[i].ItemsSold[j].Price,
-                            Quantity = sales[i].ItemsSold[j].Quantity
+                            Id = sales[i].ProductSold[j].Id,
+                            ItemName = sales[i].ProductSold[j].Name,
+                            Price = sales[i].ProductSold[j].Price.RetailPrice,
+                            Quantity = sales[i].ProductSold[j].Quantity
                         };
                         items.Add(item);
                     }

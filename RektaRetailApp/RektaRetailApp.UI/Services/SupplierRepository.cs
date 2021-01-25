@@ -7,11 +7,11 @@ using AutoMapper;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.Commands.Supplier;
-using RektaRetailApp.UI.Data;
 using RektaRetailApp.UI.Helpers;
 using RektaRetailApp.UI.Queries.Supplier;
 

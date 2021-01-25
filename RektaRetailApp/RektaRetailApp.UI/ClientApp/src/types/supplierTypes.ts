@@ -40,3 +40,36 @@ export type DashboardProps = {
       string
       >
 }
+
+export interface CategoryInterface {
+  categoryName: string;
+  categoryId: number;
+  categoryDescription: string;
+}
+export interface CreateInventoryProp {
+  name: string;
+  description: string;
+  batchNumber: string;
+  categoryName: string;
+  productQuantity: number;
+  supplyDate: Date;
+}
+
+export interface ProductSuppliedType {
+  id: number;
+  name: string;
+  quantity: number;
+}
+export interface SupplierDetailType {
+  name: string;
+  phoneNumber: string;
+  description: string;
+  supplierId: number;
+  suppliedProducts: ProductSuppliedType[];
+}
+
+export interface SupplierResponseType {
+  data: SupplierDetailType;
+  errors: string[];
+  currentResponseStatus: string;
+}

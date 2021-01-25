@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using RektaRetailApp.UI.Data;
+using RektaRetailApp.Domain.Data;
 
-namespace RektaRetailApp.UI.Migrations
+namespace RektaGraphQLServer.Migrations
 {
     [DbContext(typeof(RektaContext))]
-    [Migration("20210117143826_InitialAppDb")]
+    [Migration("20210125011554_InitialAppDb")]
     partial class InitialAppDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,12 +201,10 @@ namespace RektaRetailApp.UI.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
@@ -243,12 +241,10 @@ namespace RektaRetailApp.UI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -415,9 +411,6 @@ namespace RektaRetailApp.UI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -429,8 +422,6 @@ namespace RektaRetailApp.UI.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Categories");
                 });
@@ -553,61 +544,6 @@ namespace RektaRetailApp.UI.Migrations
                     b.ToTable("Inventories");
                 });
 
-            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ItemSold", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("Quantity")
-                        .HasColumnType("real");
-
-                    b.Property<int?>("SaleId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemName");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.HasIndex("SaleId");
-
-                    b.ToTable("ItemsSold");
-                });
-
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -620,9 +556,6 @@ namespace RektaRetailApp.UI.Migrations
 
                     b.Property<string>("Comments")
                         .HasColumnType("text");
-
-                    b.Property<decimal>("CostPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -645,14 +578,14 @@ namespace RektaRetailApp.UI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int>("ProductPriceId")
+                        .HasColumnType("integer");
+
                     b.Property<float>("Quantity")
                         .HasColumnType("real");
 
-                    b.Property<float>("ReOrderPoint")
-                        .HasColumnType("real");
-
-                    b.Property<decimal>("RetailPrice")
-                        .HasColumnType("decimal(12,2)");
+                    b.Property<int?>("SaleId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("integer");
@@ -662,9 +595,6 @@ namespace RektaRetailApp.UI.Migrations
 
                     b.Property<int>("UnitMeasure")
                         .HasColumnType("integer");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(12,2)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -680,11 +610,101 @@ namespace RektaRetailApp.UI.Migrations
 
                     b.HasIndex("InventoryId");
 
+                    b.HasIndex("SaleId");
+
                     b.HasIndex("SupplierId");
 
                     b.HasIndex("SupplyDate");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ProductCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryName");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ProductPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("RetailPrice")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.HasIndex("RetailPrice");
+
+                    b.ToTable("ProductPrices");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Sale", b =>
@@ -840,41 +860,6 @@ namespace RektaRetailApp.UI.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.SuppliersInventories", b =>
-                {
-                    b.Property<int?>("InventoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("InventoryId", "SupplierId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("SupplierInventories");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -937,14 +922,6 @@ namespace RektaRetailApp.UI.Migrations
                     b.Navigation("WorkShift");
                 });
 
-            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Category", b =>
-                {
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.Product", null)
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Inventory", b =>
                 {
                     b.HasOne("RektaRetailApp.Domain.DomainModels.Category", "Category")
@@ -956,22 +933,6 @@ namespace RektaRetailApp.UI.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ItemSold", b =>
-                {
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("RektaRetailApp.Domain.DomainModels.ItemSold", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.Sale", null)
-                        .WithMany("ItemsSold")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Product", b =>
                 {
                     b.HasOne("RektaRetailApp.Domain.DomainModels.Inventory", "Inventory")
@@ -980,15 +941,39 @@ namespace RektaRetailApp.UI.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.Sale", null)
+                        .WithMany("ProductSold")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("RektaRetailApp.Domain.DomainModels.Supplier", "Supplier")
                         .WithMany("ProductsSupplied")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Inventory");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ProductCategory", b =>
+                {
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.Product", null)
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ProductPrice", b =>
+                {
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.Product", "Product")
+                        .WithOne("Price")
+                        .HasForeignKey("RektaRetailApp.Domain.DomainModels.ProductPrice", "ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Sale", b =>
@@ -999,25 +984,6 @@ namespace RektaRetailApp.UI.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.SuppliersInventories", b =>
-                {
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.Inventory", "ProductInventory")
-                        .WithMany("InventorySuppliers")
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.Supplier", "ProductSupplier")
-                        .WithMany("ProductInventories")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductInventory");
-
-                    b.Navigation("ProductSupplier");
-                });
-
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ApplicationUser", b =>
                 {
                     b.Navigation("SalesYouOwn");
@@ -1026,24 +992,23 @@ namespace RektaRetailApp.UI.Migrations
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Inventory", b =>
                 {
                     b.Navigation("InventoryItems");
-
-                    b.Navigation("InventorySuppliers");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Product", b =>
                 {
+                    b.Navigation("Price")
+                        .IsRequired();
+
                     b.Navigation("ProductCategories");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Sale", b =>
                 {
-                    b.Navigation("ItemsSold");
+                    b.Navigation("ProductSold");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Supplier", b =>
                 {
-                    b.Navigation("ProductInventories");
-
                     b.Navigation("ProductsSupplied");
                 });
 #pragma warning restore 612, 618

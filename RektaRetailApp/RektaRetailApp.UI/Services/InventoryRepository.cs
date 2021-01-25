@@ -4,17 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.ApiModel.Inventory;
 using RektaRetailApp.UI.Commands.Inventory;
-using RektaRetailApp.UI.Data;
 using RektaRetailApp.UI.Helpers;
 using RektaRetailApp.UI.Queries.Inventory;
 

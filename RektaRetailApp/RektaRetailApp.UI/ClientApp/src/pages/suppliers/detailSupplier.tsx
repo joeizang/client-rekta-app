@@ -3,45 +3,42 @@ import axios from 'axios';
 import { BASE_URL, COLOURS } from '../../constants';
 import { useLocation } from 'react-router-dom';
 import {Card} from "@material-ui/core";
+import {SupplierDetailType, SupplierResponseType} from "../../types/supplierTypes";
+import {getSupplier} from "../../utils/apiService";
+import ReactPlayer from "react-player";
 
-interface IProductSupplied {
-  id: number;
-  name: string;
-  quantity: number;
-}
-interface ISupplierDetail {
-  name: string;
-  phoneNumber: string;
-  description: string;
-  supplierId: number;
-  suppliedProducts: IProductSupplied[];
-}
-
-interface IResponse {
-  data: ISupplierDetail;
-  errors: string[];
-  currentResponseStatus: string;
-}
-
-export const DetailSupplier: FC<IResponse> = () => {
-  const [supplier, setSupplier] = useState<ISupplierDetail>();
+export const DetailSupplier: FC<SupplierResponseType> = () => {
+  const [supplier, setSupplier] = useState<SupplierDetailType>();
+  const [webcam, setWebCam] = useState<MediaStream>();
   //const { id } = useParams<>();
   const location = useLocation();
   console.log(location);
 
   useEffect(() => {
     //const url = `${SUPPLIERS_URL}/${id}`;
-    async function getSupplier() {
-      const result = (await axios.get(`${BASE_URL}${location.pathname}`)).data
-        .data;
-      setSupplier(result);
-    }
-    getSupplier();
+    const result = getSupplier().then(response => {
+      return response
+    });
+    setSupplier(result)
   }, []);
   console.log(supplier);
+  // const xvideo = async () => {
+  //   const video = document.getElementById('samplevideo');
+  //   return await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  // };
+  // useEffect(() => {
+  //   const doIt = async () => {
+  //     return await xvideo();
+  //   }
+  //   const result = async () => {
+  //     setWebCam(await doIt());
+  //   }
+  //   result();
+  // })
   return (
     <Fragment>
       <Card className="shadow-sm mb-5 bg-white rounded">
+        {/*<ReactPlayer url={webcam} width={200} height={200} playing config={{ file: { forceVideo: true}}}/>*/}
         {/* <Card.Header>{this.state.supplier.supplierName}</Card.Header> */}
         {/*<Card.Header*/}
         {/*  as="h2"*/}

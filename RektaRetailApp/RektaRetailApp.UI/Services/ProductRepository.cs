@@ -5,15 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using RektaRetailApp.Domain.Data;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.UI.Abstractions;
 using RektaRetailApp.UI.Abstractions.Entities;
 using RektaRetailApp.UI.ApiModel.Product;
 using RektaRetailApp.UI.Commands.Product;
-using RektaRetailApp.UI.Data;
 using RektaRetailApp.UI.Helpers;
 using RektaRetailApp.UI.Queries.Product;
 
@@ -103,8 +102,8 @@ namespace RektaRetailApp.UI.Services
             target.Brand = command.Brand?.Trim().ToUpperInvariant();
             target.Name = command.Name.Trim().ToUpperInvariant();
             target.Quantity = command.Quantity;
-            target.RetailPrice = command.RetailPrice;
-            target.CostPrice = command.CostPrice;
+            target.Price.RetailPrice = command.RetailPrice;
+            target.Price.CostPrice = command.CostPrice;
             target.UnitMeasure = command.UnitMeasure;
             target.Verified = command.Verified;
             target.SupplyDate = command.SupplyDate;

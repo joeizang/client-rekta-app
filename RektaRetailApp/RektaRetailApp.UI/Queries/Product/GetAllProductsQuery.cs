@@ -63,8 +63,8 @@ namespace RektaRetailApp.UI.Queries.Product
                 for (var i = 0; i < products.Count; i++)
                 {
                     var projected = new ProductApiModel(
-                        products[i].Name, products[i].SupplierId, products[i].Quantity, products[i].CostPrice,
-                        products[i].UnitPrice, products[i].RetailPrice, products[i].Id);
+                        products[i].Name, products[i].SupplierId, products[i].Quantity, products[i].Price.CostPrice,
+                        products[i].Price.UnitPrice, products[i].Price.RetailPrice, products[i].Id);
                     projectedProducts.Add(projected);
                 }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation;
-using RektaRetailApp.Domain.DomainModels;
+﻿using FluentValidation;
 
 namespace RektaRetailApp.UI.Validations
 {
@@ -16,15 +11,15 @@ namespace RektaRetailApp.UI.Validations
                 .NotNull().WithMessage("Product names cannot be blank spaces")
                 .MaximumLength(50).WithMessage("The Product name is too long!")
                 .MinimumLength(2).WithMessage("The Product name is too short!");
-            RuleFor(p => p.RetailPrice)
+            RuleFor(p => p.Price.RetailPrice)
                 .GreaterThanOrEqualTo(decimal.MaxValue).WithMessage("The value you entered is too large")
                 .LessThanOrEqualTo(0).WithMessage("The number you have entered is too small")
                 .ScalePrecision(12, 4, true);
-            RuleFor(p => p.CostPrice)
+            RuleFor(p => p.Price.CostPrice)
                 .GreaterThanOrEqualTo(decimal.MaxValue).WithMessage("The value you entered is too large")
                 .LessThanOrEqualTo(0).WithMessage("The number you have entered is too small")
                 .ScalePrecision(12, 4, true);
-            RuleFor(p => p.UnitPrice)
+            RuleFor(p => p.Price.UnitPrice)
                 .GreaterThanOrEqualTo(decimal.MaxValue).WithMessage("The value you entered is too large")
                 .LessThanOrEqualTo(0).WithMessage("The number you have entered is too small")
                 .ScalePrecision(12, 4, true);

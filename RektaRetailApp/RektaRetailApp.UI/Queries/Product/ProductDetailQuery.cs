@@ -30,13 +30,14 @@ public class ProductDetailQuery : IRequest<ApiModel.Response<ProductDetailApiMod
             var includes = new Expression<Func<Domain.DomainModels.Product, object>>[]
             {
                 p => p.ProductCategories,
-                p => p.Supplier!
+                p => p.Supplier!,
+                p => p.Price
             };
             var product = await _repo.GetProductByAsync(cancellationToken, includes, p => p.Id == request.Id)
                 .ConfigureAwait(false);
             //var data = _mapper.Map<Domain.DomainModels.Product, ProductDetailApiModel>(product);
-            var data = new ProductDetailApiModel(retailPrice: product.RetailPrice, name: product.Name, quantity:product.Quantity,
-                suppliedPrice: product.CostPrice,supplyDate:product.SupplyDate, id: product.Id, unitPrice: product.UnitPrice,
+            var data = new ProductDetailApiModel(retailPrice: product.Price.RetailPrice, name: product.Name, quantity:product.Quantity,
+                suppliedPrice: product.Price.CostPrice,supplyDate:product.SupplyDate, id: product.Id, unitPrice: product.Price.UnitPrice,
                 supplierName: product.Supplier?.Name, imageUrl: product.ImageUrl, mobileNumber: product.Supplier?.MobileNumber);
             var result = new ApiModel.Response<ProductDetailApiModel>(data, ResponseStatus.Success);
             return result;

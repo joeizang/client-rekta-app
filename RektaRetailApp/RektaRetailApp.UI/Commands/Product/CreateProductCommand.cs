@@ -64,17 +64,18 @@ namespace RektaRetailApp.UI.Commands.Product
                 var includes = new Expression<Func<Domain.DomainModels.Product, object>>[]
                 {
                     p => p.ProductCategories,
-                    p => p.Supplier!
+                    p => p.Supplier!,
+                    p => p.Price
                 };
                 await _repo.CreateProductAsync(request, cancellationToken).ConfigureAwait(false);
 
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);
 
                 var product = await _repo.GetProductByAsync(cancellationToken, includes, p => p.Name.Equals(request.Name.ToUpperInvariant()),
-                    p => p.RetailPrice == request.RetailPrice, p => p.CostPrice == request.CostPrice);
+                    p => p.Price.RetailPrice == request.RetailPrice, p => p.Price.CostPrice == request.CostPrice);
 
-                var model = new ProductDetailApiModel(product.RetailPrice, product.UnitPrice, product.Name, product.Quantity,
-                    product.CostPrice, product.Supplier?.Name, product.Supplier?.MobileNumber,
+                var model = new ProductDetailApiModel(product.Price.RetailPrice, product.Price.UnitPrice, product.Name, product.Quantity,
+                    product.Price.CostPrice, product.Supplier?.Name, product.Supplier?.MobileNumber,
                     product.ImageUrl,  product.SupplyDate, product.Id);
                 var result = new Response<ProductDetailApiModel>(model, ResponseStatus.Success);
                 var createEvent = new ProductCreateEvent(model);

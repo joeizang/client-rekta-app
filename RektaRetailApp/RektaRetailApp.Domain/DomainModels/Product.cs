@@ -13,26 +13,12 @@ namespace RektaRetailApp.Domain.DomainModels
     {
         public Product()
         {
-            ProductCategories = new List<Category>();
+            ProductCategories = new List<ProductCategory>();
         }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = null!;
-
-        [Column(TypeName = "decimal(12,2)")]
-        [Required]
-        public decimal RetailPrice { get; set; }
-
-        public float ReOrderPoint { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(12,2)")]
-        public decimal CostPrice { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(12,2)")]
-        public decimal UnitPrice { get; set; }
 
         [Required]
         public DateTimeOffset SupplyDate { get; set; }
@@ -51,14 +37,18 @@ namespace RektaRetailApp.Domain.DomainModels
 
         public bool Verified { get; set; }
 
-        public List<Category> ProductCategories { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; }
 
         public Inventory? Inventory { get; set; }
 
         public int InventoryId { get; set; }
 
-        public int SupplierId { get; set; }
+        public ProductPrice Price { get; set; }
 
-        public Supplier? Supplier { get; set; }
+        public int ProductPriceId { get; set; }
+
+        public int SupplierId { get; set; }
+        
+        public Supplier Supplier { get; set; }
     }
 }

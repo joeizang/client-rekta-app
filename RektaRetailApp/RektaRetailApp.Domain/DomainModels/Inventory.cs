@@ -12,7 +12,6 @@ namespace RektaRetailApp.Domain.DomainModels
     {
         public Inventory()
         {
-            InventorySuppliers = new List<SuppliersInventories>();
             InventoryItems = new List<Product>();
         }
         [StringLength(50)]
@@ -43,15 +42,12 @@ namespace RektaRetailApp.Domain.DomainModels
         [Required]
         public DateTimeOffset SupplyDate { get; set; }
 
-        public List<SuppliersInventories> InventorySuppliers { get; set; }
-
-
         public void CalculateTotalValuesOfInventory()
         {
             if (InventoryItems.Any())
             {
-                TotalCostValue = InventoryItems.Sum(x => x.CostPrice);
-                TotalRetailValue = InventoryItems.Sum(x => x.RetailPrice);
+                TotalCostValue = InventoryItems.Sum(x => x.Price.CostPrice);
+                TotalRetailValue = InventoryItems.Sum(x => x.Price.RetailPrice);
 
             }
         }

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RektaRetailApp.UI", "RektaR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RektaRetailApp.Domain", "RektaRetailApp.Domain\RektaRetailApp.Domain.csproj", "{9FCC606C-22AE-446F-A6F3-06C631C6A7F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RektaGraphQLServer", "RektaGraphQLServer\RektaGraphQLServer.csproj", "{BCCA5C45-4135-489B-876A-FD3A7047DE31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9FCC606C-22AE-446F-A6F3-06C631C6A7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FCC606C-22AE-446F-A6F3-06C631C6A7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FCC606C-22AE-446F-A6F3-06C631C6A7F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCCA5C45-4135-489B-876A-FD3A7047DE31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCCA5C45-4135-489B-876A-FD3A7047DE31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCCA5C45-4135-489B-876A-FD3A7047DE31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCCA5C45-4135-489B-876A-FD3A7047DE31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

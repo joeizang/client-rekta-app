@@ -1,12 +1,16 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace RektaRetailApp.Domain.DomainModels
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum SaleType
+    public enum PaymentType
     {
-        Paid,
+        Cash,
         Credit,
+        Electronic,
+        USSD,
+        Cheque,
+        Other
     }
 }

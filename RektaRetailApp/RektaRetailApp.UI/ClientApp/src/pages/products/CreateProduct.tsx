@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import React, {FC, Fragment, useState} from 'react'
+import {useForm} from 'react-hook-form'
 import {
   Button,
   FormGroup,
@@ -7,14 +7,14 @@ import {
   Grid,
   makeStyles,
   MenuItem,
-  Paper,
   Select,
   TextField,
   Theme,
   Typography,
 } from '@material-ui/core'
-import { useMutation, useQuery } from 'react-query'
+import {useQuery} from 'react-query'
 import axios from "axios";
+
 interface IProductForm {
   productName: string
   retailPrice: number
@@ -54,18 +54,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 const GetUnitsMeasure = async () => {
-  const result = await axios('https://localhost:5004/api/unitsmeasure',{ method: 'get'})
-  return result;
+  return axios('https://localhost:5001/api/unitsmeasure', {method: 'get'});
 }
 
 
 export const CreateProduct: FC = () => {
   const { register, handleSubmit, errors, reset } = useForm<IProductForm>()
   const classes = useStyles()
+  
   const { data } = useQuery('GetUnitMeasure',GetUnitsMeasure)
-  const inventories = useQuery('GetInventories', () => axios.get('https://localhost:5004/api/inventories')
+  const inventories = useQuery('GetInventories', () => axios.get('https://localhost:5001/api/inventories')
       .then((response) => response.data))
   console.log(inventories)
+  
   const [enumValue, setEnumValue] = useState('')
   const [inventoryValue, setInventoryValue] = useState('')
 
@@ -74,7 +75,7 @@ export const CreateProduct: FC = () => {
   const submitForm = async (product: IProductForm) => {
     showProcessingAnime(true)
     const result = await axios.post('/api/products', product)
-    if(result.data !== null || result.data !== undefined && result.status === 200) {
+    if(result.data !== null || result.status === 200) {
       console.log(await result.data)
       reset()
     }

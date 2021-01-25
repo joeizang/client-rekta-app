@@ -12,24 +12,12 @@ import {
 import axios from 'axios';
 import CreateCategory from '../category/CreateCategory';
 import { CATEGORY_URL, INVENTORY_URL } from '../../constants';
-
-interface ICategory {
-  categoryName: string;
-  categoryId: number;
-  categoryDescription: string;
-}
-interface CreateInventoryProp {
-  name: string;
-  description: string;
-  batchNumber: string;
-  categoryName: string;
-  productQuantity: number;
-  supplyDate: Date;
-}
+import {CategoryInterface, CreateInventoryProp} from "../../types/supplierTypes";
+import {CreateInventory  } from "../../utils/apiService";
 
 interface formData {
   data: CreateInventoryProp;
-  categories: ICategory[];
+  categories: CategoryInterface[];
 }
 
 export const AddInventory: FC<formData> = ({ categories }) => {
@@ -54,28 +42,7 @@ export const AddInventory: FC<formData> = ({ categories }) => {
   }, []);
   currentCategories.current = dropDown;
 
-  const doSubmit = (
-    data: CreateInventoryProp,
-    evt: React.BaseSyntheticEvent<object, any, any> | undefined
-  ) => {
-    try {
-      axios
-        .post(`${INVENTORY_URL}`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status >= 200 && response.status < 300) {
-            // @ts-ignore
-            evt.target.reset();
-          }
-        });
-    } catch (error) {
-      console.log('error on submitting inventory');
-    }
-  };
+  
   return (
     <Fragment>
       <Card className="shadow-lg mb-5 bg-white rounded">
@@ -83,7 +50,7 @@ export const AddInventory: FC<formData> = ({ categories }) => {
         <CardHeader as="h3" className="text-center">
           Create Inventory
         </CardHeader>
-          <form onSubmit={handleSubmit(doSubmit)}>
+          <form onSubmit={handleSubmit(CreateInventory)}>
             <FormGroup>
               <FormLabel>
                 Inventory Name <span className="text-danger">*</span>

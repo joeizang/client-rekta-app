@@ -9,7 +9,6 @@ namespace RektaRetailApp.Domain.DomainModels
         public Supplier()
         {
             ProductsSupplied = new List<Product>();
-            ProductInventories = new List<SuppliersInventories>();
         }
 
         public Supplier(string? name, string? mobileNumber, string? description)
@@ -18,7 +17,6 @@ namespace RektaRetailApp.Domain.DomainModels
             MobileNumber = mobileNumber;
             Description = description;
             ProductsSupplied = new List<Product>();
-            ProductInventories = new List<SuppliersInventories>();
         }
 
         [StringLength(50)]
@@ -32,8 +30,6 @@ namespace RektaRetailApp.Domain.DomainModels
         public string? Description { get; set; }
         
         public List<Product> ProductsSupplied { get; set; }
-
-        public List<SuppliersInventories> ProductInventories { get; set; }
 
     }
 }
