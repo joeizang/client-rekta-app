@@ -18,7 +18,8 @@ namespace RektaRetailApp.UI.Profiles
             CreateMap<ProductApiModel, Product>();
             CreateMap<Product, ProductSummaryApiModel>();
             CreateMap<CreateProductCommand, Product>()
-                .ForMember(d => d.ProductCategories, conf => conf.Ignore());
+                .ForMember(d => d.ProductCategories, 
+                    conf => conf.Ignore());
             
         }
     }

@@ -29,7 +29,7 @@ namespace RektaRetailApp.Domain.DomainModels
         public string? Brand { get; set; }
 
         public string? ImageUrl { get; set; } = string.Empty;
-
+        
         public string? Comments { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

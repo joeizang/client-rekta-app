@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RektaRetailApp.Domain.Abstractions;
 
 namespace RektaRetailApp.Domain.DomainModels
@@ -20,7 +22,8 @@ namespace RektaRetailApp.Domain.DomainModels
 
         [StringLength(450)]
         public string? Description { get; set; }
-
+        
+        [JsonConverter(typeof(StringEnumConverter))]
         public UnitMeasure UnitAmount { get; set; }
 
         public decimal TotalCostValue { get; private set; }

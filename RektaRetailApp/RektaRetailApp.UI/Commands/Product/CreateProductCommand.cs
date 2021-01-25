@@ -32,6 +32,7 @@ namespace RektaRetailApp.UI.Commands.Product
         public string? Brand { get; set; }
 
         public string? ImageUrl { get; set; }
+        
         public DateTimeOffset SupplyDate { get; set; }
 
         public int InventoryId { get; set; }
@@ -71,7 +72,8 @@ namespace RektaRetailApp.UI.Commands.Product
 
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);
 
-                var product = await _repo.GetProductByAsync(cancellationToken, includes, p => p.Name.Equals(request.Name.ToUpperInvariant()),
+                var product = await _repo.GetProductByAsync(cancellationToken, includes,
+                    p => p.Name.Equals(request.Name.ToUpperInvariant()),
                     p => p.Price.RetailPrice == request.RetailPrice, p => p.Price.CostPrice == request.CostPrice);
 
                 var model = new ProductDetailApiModel(product.Price.RetailPrice, product.Price.UnitPrice, product.Name, product.Quantity,
