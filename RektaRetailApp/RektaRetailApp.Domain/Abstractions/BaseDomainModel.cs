@@ -13,10 +13,10 @@ namespace RektaRetailApp.Domain.Abstractions
         [Key]
         public int Id { get; set; }
 
-        public string CreatedBy { get; set; } = null!;
+        public string CreatedBy { get; set; } = "Anonymous";
 
-        public string UpdatedBy { get; set; } = null!;
+        public string UpdatedBy { get; set; } = "Anonymous";
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

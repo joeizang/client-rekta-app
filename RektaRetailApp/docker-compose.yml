@@ -2,11 +2,30 @@ version: "3.7"
 services:
   rektadb:
     image: postgres:12.5
+    restart: always
     env_file:
       - dbservice.env
     volumes:
       - pg-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=testpassword
     ports:
       - 5434:5432
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.3
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "rektadb"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:testpassword@rektadb:5432/rektaappdb
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: rektaAppp@ssword!
 volumes:
   pg-db:

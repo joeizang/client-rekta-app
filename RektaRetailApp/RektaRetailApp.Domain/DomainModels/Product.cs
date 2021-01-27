@@ -25,14 +25,19 @@ namespace RektaRetailApp.Domain.DomainModels
 
         [Required]
         public float Quantity { get; set; }
-
+        
+        [StringLength(100)]
         public string? Brand { get; set; }
-
+        
+        [StringLength(300)]
         public string? ImageUrl { get; set; } = string.Empty;
         
+        [StringLength(500)]
         public string? Comments { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [ForeignKey(nameof(UnitMeasure))]
+        public string UnitMeasureId { get; set; }
+        
         public UnitMeasure UnitMeasure { get; set; }
 
         public bool Verified { get; set; }

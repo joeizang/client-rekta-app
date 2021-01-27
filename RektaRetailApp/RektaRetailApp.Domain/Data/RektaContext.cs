@@ -39,6 +39,12 @@ namespace RektaRetailApp.Domain.Data
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; } = default!;
 
+        public DbSet<PaymentType> PaymentTypes { get; set; } = default!;
+
+        public DbSet<SaleType> SaleTypes { get; set; }
+
+        public DbSet<UnitMeasure> UnitMeasures { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

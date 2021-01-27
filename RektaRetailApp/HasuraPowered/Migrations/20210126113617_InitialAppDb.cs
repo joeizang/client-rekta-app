@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace RektaGraphQLServer.Migrations
+namespace HasuraPowered.Migrations
 {
     public partial class InitialAppDb : Migration
     {
@@ -104,6 +104,18 @@ namespace RektaGraphQLServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentTypes",
+                columns: table => new
+                {
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentTypes", x => x.Type);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -124,6 +136,18 @@ namespace RektaGraphQLServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SaleTypes",
+                columns: table => new
+                {
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SaleTypes", x => x.Type);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
@@ -141,6 +165,18 @@ namespace RektaGraphQLServer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suppliers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnitMeasures",
+                columns: table => new
+                {
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnitMeasures", x => x.Type);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,7 +229,7 @@ namespace RektaGraphQLServer.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(450)", maxLength: 450, nullable: true),
-                    UnitAmount = table.Column<int>(type: "integer", nullable: false),
+                    UnitMeasureId = table.Column<string>(type: "text", nullable: false),
                     TotalCostValue = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     Verified = table.Column<bool>(type: "boolean", nullable: false),
                     BatchNumber = table.Column<string>(type: "text", nullable: true),
@@ -214,6 +250,12 @@ namespace RektaGraphQLServer.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inventories_UnitMeasures_UnitMeasureId",
+                        column: x => x.UnitMeasureId,
+                        principalTable: "UnitMeasures",
+                        principalColumn: "Type",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -280,8 +322,8 @@ namespace RektaGraphQLServer.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -325,8 +367,8 @@ namespace RektaGraphQLServer.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -350,9 +392,9 @@ namespace RektaGraphQLServer.Migrations
                     SalesPersonId = table.Column<string>(type: "text", nullable: false),
                     SubTotal = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     GrandTotal = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    TypeOfSale = table.Column<int>(type: "integer", nullable: false),
-                    ModeOfPayment = table.Column<int>(type: "integer", nullable: false),
-                    CustomerName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    TypeOfSaleId = table.Column<string>(type: "text", nullable: false),
+                    ModeOfPaymentId = table.Column<string>(type: "text", nullable: false),
+                    CustomerName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CustomerPhoneNumber = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     ApplicationUserId = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -370,6 +412,24 @@ namespace RektaGraphQLServer.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sales_AspNetUsers_SalesPersonId",
+                        column: x => x.SalesPersonId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Sales_PaymentTypes_ModeOfPaymentId",
+                        column: x => x.ModeOfPaymentId,
+                        principalTable: "PaymentTypes",
+                        principalColumn: "Type",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Sales_SaleTypes_TypeOfSaleId",
+                        column: x => x.TypeOfSaleId,
+                        principalTable: "SaleTypes",
+                        principalColumn: "Type",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -381,10 +441,10 @@ namespace RektaGraphQLServer.Migrations
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     SupplyDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Quantity = table.Column<float>(type: "real", nullable: false),
-                    Brand = table.Column<string>(type: "text", nullable: true),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    Comments = table.Column<string>(type: "text", nullable: true),
-                    UnitMeasure = table.Column<int>(type: "integer", nullable: false),
+                    Brand = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    ImageUrl = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Comments = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    UnitMeasureId = table.Column<string>(type: "text", nullable: false),
                     Verified = table.Column<bool>(type: "boolean", nullable: false),
                     InventoryId = table.Column<int>(type: "integer", nullable: false),
                     ProductPriceId = table.Column<int>(type: "integer", nullable: false),
@@ -417,6 +477,12 @@ namespace RektaGraphQLServer.Migrations
                         principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_UnitMeasures_UnitMeasureId",
+                        column: x => x.UnitMeasureId,
+                        principalTable: "UnitMeasures",
+                        principalColumn: "Type",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -549,6 +615,11 @@ namespace RektaGraphQLServer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Inventories_UnitMeasureId",
+                table: "Inventories",
+                column: "UnitMeasureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 table: "PersistedGrants",
                 column: "Expiration");
@@ -605,14 +676,34 @@ namespace RektaGraphQLServer.Migrations
                 column: "SupplyDate");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_UnitMeasureId",
+                table: "Products",
+                column: "UnitMeasureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sales_ApplicationUserId",
                 table: "Sales",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sales_ModeOfPaymentId",
+                table: "Sales",
+                column: "ModeOfPaymentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sales_SaleDate",
                 table: "Sales",
                 column: "SaleDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_SalesPersonId",
+                table: "Sales",
+                column: "SalesPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_TypeOfSaleId",
+                table: "Sales",
+                column: "TypeOfSaleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_MobileNumber",
@@ -681,7 +772,16 @@ namespace RektaGraphQLServer.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
+                name: "UnitMeasures");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "PaymentTypes");
+
+            migrationBuilder.DropTable(
+                name: "SaleTypes");
 
             migrationBuilder.DropTable(
                 name: "WorkerShifts");

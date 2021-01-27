@@ -18,19 +18,28 @@ namespace RektaRetailApp.Domain.DomainModels
 
         public DateTimeOffset SaleDate { get; set; }
 
+        [ForeignKey(nameof(SalesPerson))]
         public string SalesPersonId { get; set; } = null!;
+
+        public ApplicationUser SalesPerson { get; set; }
 
         public decimal SubTotal { get; set; }
 
         public decimal GrandTotal { get; set; }
+
+        [ForeignKey(nameof(TypeOfSale))]
+        public string TypeOfSaleId { get; set; }
         
-        [JsonConverter(typeof(StringEnumConverter))]
         public SaleType TypeOfSale { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [ForeignKey(nameof(ModeOfPayment))]
+        public string ModeOfPaymentId { get; set; }
+        
         public PaymentType ModeOfPayment { get; set; }
 
-        [StringLength(50)] public string? CustomerName { get; set; }
+        [StringLength(50)]
+        [Required]
+        public string CustomerName { get; set; }
 
         [StringLength(50)] public string? CustomerPhoneNumber { get; set; }
 

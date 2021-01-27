@@ -2,18 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RektaRetailApp.Domain.Data;
 
-namespace RektaGraphQLServer.Migrations
+namespace HasuraPowered.Migrations
 {
     [DbContext(typeof(RektaContext))]
-    [Migration("20210125011554_InitialAppDb")]
-    partial class InitialAppDb
+    partial class RektaContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,10 +199,12 @@ namespace RektaGraphQLServer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
@@ -241,10 +241,12 @@ namespace RektaGraphQLServer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -518,8 +520,9 @@ namespace RektaGraphQLServer.Migrations
                     b.Property<decimal>("TotalRetailValue")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("UnitAmount")
-                        .HasColumnType("integer");
+                    b.Property<string>("UnitMeasureId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -541,7 +544,23 @@ namespace RektaGraphQLServer.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("UnitMeasureId");
+
                     b.ToTable("Inventories");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.PaymentType", b =>
+                {
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("text");
+
+                    b.HasKey("Type");
+
+                    b.ToTable("PaymentTypes");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Product", b =>
@@ -552,10 +571,12 @@ namespace RektaGraphQLServer.Migrations
                         .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Brand")
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Comments")
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -565,7 +586,8 @@ namespace RektaGraphQLServer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<int>("InventoryId")
                         .HasColumnType("integer");
@@ -593,8 +615,9 @@ namespace RektaGraphQLServer.Migrations
                     b.Property<DateTimeOffset>("SupplyDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UnitMeasure")
-                        .HasColumnType("integer");
+                    b.Property<string>("UnitMeasureId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -615,6 +638,8 @@ namespace RektaGraphQLServer.Migrations
                     b.HasIndex("SupplierId");
 
                     b.HasIndex("SupplyDate");
+
+                    b.HasIndex("UnitMeasureId");
 
                     b.ToTable("Products");
                 });
@@ -725,6 +750,7 @@ namespace RektaGraphQLServer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -738,8 +764,9 @@ namespace RektaGraphQLServer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("ModeOfPayment")
-                        .HasColumnType("integer");
+                    b.Property<string>("ModeOfPaymentId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("SaleDate")
                         .HasColumnType("timestamp with time zone");
@@ -751,8 +778,9 @@ namespace RektaGraphQLServer.Migrations
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<int>("TypeOfSale")
-                        .HasColumnType("integer");
+                    b.Property<string>("TypeOfSaleId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -765,9 +793,29 @@ namespace RektaGraphQLServer.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("ModeOfPaymentId");
+
                     b.HasIndex("SaleDate");
 
+                    b.HasIndex("SalesPersonId");
+
+                    b.HasIndex("TypeOfSaleId");
+
                     b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.SaleType", b =>
+                {
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("text");
+
+                    b.HasKey("Type");
+
+                    b.ToTable("SaleTypes");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Shift", b =>
@@ -860,6 +908,20 @@ namespace RektaGraphQLServer.Migrations
                     b.ToTable("Suppliers");
                 });
 
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.UnitMeasure", b =>
+                {
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("text");
+
+                    b.HasKey("Type");
+
+                    b.ToTable("UnitMeasures");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -930,7 +992,15 @@ namespace RektaGraphQLServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.UnitMeasure", "UnitAmount")
+                        .WithMany()
+                        .HasForeignKey("UnitMeasureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("UnitAmount");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Product", b =>
@@ -952,9 +1022,17 @@ namespace RektaGraphQLServer.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.UnitMeasure", "UnitMeasure")
+                        .WithMany()
+                        .HasForeignKey("UnitMeasureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Inventory");
 
                     b.Navigation("Supplier");
+
+                    b.Navigation("UnitMeasure");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ProductCategory", b =>
@@ -982,6 +1060,30 @@ namespace RektaGraphQLServer.Migrations
                         .WithMany("SalesYouOwn")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.PaymentType", "ModeOfPayment")
+                        .WithMany()
+                        .HasForeignKey("ModeOfPaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.ApplicationUser", "SalesPerson")
+                        .WithMany()
+                        .HasForeignKey("SalesPersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.SaleType", "TypeOfSale")
+                        .WithMany()
+                        .HasForeignKey("TypeOfSaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModeOfPayment");
+
+                    b.Navigation("SalesPerson");
+
+                    b.Navigation("TypeOfSale");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.ApplicationUser", b =>

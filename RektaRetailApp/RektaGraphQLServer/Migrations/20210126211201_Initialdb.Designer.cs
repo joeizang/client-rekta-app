@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RektaRetailApp.Domain.Data;
@@ -9,9 +10,10 @@ using RektaRetailApp.Domain.Data;
 namespace RektaGraphQLServer.Migrations
 {
     [DbContext(typeof(RektaContext))]
-    partial class RektaContextModelSnapshot : ModelSnapshot
+    [Migration("20210126211201_Initialdb")]
+    partial class Initialdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

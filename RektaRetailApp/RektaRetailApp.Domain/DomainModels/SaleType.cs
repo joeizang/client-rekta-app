@@ -1,12 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace RektaRetailApp.Domain.DomainModels
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum SaleType
+    public class SaleType
     {
-        Paid,
-        Credit,
+        [Key]
+        [Column(TypeName = "text")]
+        public string Type { get; set; }
+        
+        [StringLength(300)]
+        [Column(TypeName = "text")]
+        public string? Description { get; set; }
     }
 }

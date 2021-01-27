@@ -22,8 +22,10 @@ namespace RektaRetailApp.Domain.DomainModels
 
         [StringLength(450)]
         public string? Description { get; set; }
+
+        [ForeignKey(nameof(UnitAmount))]
+        public string UnitMeasureId { get; set; }
         
-        [JsonConverter(typeof(StringEnumConverter))]
         public UnitMeasure UnitAmount { get; set; }
 
         public decimal TotalCostValue { get; private set; }
