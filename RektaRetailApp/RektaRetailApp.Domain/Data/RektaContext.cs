@@ -24,9 +24,9 @@ namespace RektaRetailApp.Domain.Data
         public DbSet<Customer> Customers { get; set; } = default!;
 
         public DbSet<Product> Products { get; set; } = default!;
-        
+
         public DbSet<ProductPrice> ProductPrices { get; set; } = default!;
-        
+
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
 
         public DbSet<Shift> WorkerShifts { get; set; } = default!;
@@ -41,9 +41,9 @@ namespace RektaRetailApp.Domain.Data
 
         public DbSet<PaymentType> PaymentTypes { get; set; } = default!;
 
-        public DbSet<SaleType> SaleTypes { get; set; }
+        public DbSet<SaleType> SaleTypes { get; set; } = default!;
 
-        public DbSet<UnitMeasure> UnitMeasures { get; set; }
+        public DbSet<UnitMeasure> UnitMeasures { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -73,24 +73,24 @@ namespace RektaRetailApp.Domain.Data
 
             builder.Entity<Product>()
                 .HasOne(p => p.Price)
-                .WithOne(p => p.Product)
+                .WithOne(p => p!.Product!)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ApplicationUser>()
                 .HasMany(x => x.SalesYouOwn)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
             builder.Entity<Sale>()
                 .HasMany(s => s.ProductSold)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
             builder.Entity<Product>()
                 .HasMany(p => p.ProductCategories)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
             builder.Entity<Product>()
                 .HasOne(p => p.Inventory)
                 .WithMany(i => i!.InventoryItems)
@@ -99,13 +99,13 @@ namespace RektaRetailApp.Domain.Data
 
             builder.Entity<Product>()
                 .HasOne(p => p.Price)
-                .WithOne(p => p.Product)
+                .WithOne(p => p!.Product!)
                 .HasForeignKey<ProductPrice>(p => p.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Supplier>()
                 .HasMany(s => s.ProductsSupplied)
-                .WithOne(p => p.Supplier)
+                .WithOne(p => p.Supplier!)
                 .HasForeignKey(p => p.SupplierId)
                 .OnDelete(DeleteBehavior.Restrict);
 

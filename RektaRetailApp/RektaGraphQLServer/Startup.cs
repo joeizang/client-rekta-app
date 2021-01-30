@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RektaGraphQLServer.DataLoader;
+using RektaGraphQLServer.Inventories;
+using RektaGraphQLServer.Products;
 using RektaGraphQLServer.Sales;
 using RektaGraphQLServer.Types;
 using RektaRetailApp.Domain.Data;
@@ -25,7 +27,7 @@ namespace RektaGraphQLServer
         {
             services.AddPooledDbContextFactory<RektaContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         n => n.MigrationsAssembly("RektaGraphQLServer"))
                     .EnableSensitiveDataLogging();
             });
@@ -34,8 +36,12 @@ namespace RektaGraphQLServer
                 .AddGraphQLServer()
                 .AddQueryType(descriptor => descriptor.Name("Query"))
                 .AddTypeExtension<SalesQueries>()
+                .AddTypeExtension<ProductQueries>()
+                .AddTypeExtension<InventoryQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                 .AddTypeExtension<SaleMutation>()
+                .AddTypeExtension<ProductMutation>()
+                .AddTypeExtension<InventoryMutation>()
                 .AddType<SaleType>()
                 .AddType<ProductType>()
                 .AddType<InventoryType>()

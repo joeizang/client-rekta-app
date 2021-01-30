@@ -21,25 +21,25 @@ namespace RektaRetailApp.Domain.DomainModels
         [ForeignKey(nameof(SalesPerson))]
         public string SalesPersonId { get; set; } = null!;
 
-        public ApplicationUser SalesPerson { get; set; }
+        public ApplicationUser? SalesPerson { get; set; }
 
         public decimal SubTotal { get; set; }
 
         public decimal GrandTotal { get; set; }
 
         [ForeignKey(nameof(TypeOfSale))]
-        public string TypeOfSaleId { get; set; }
-        
-        public SaleType TypeOfSale { get; set; }
+        public string TypeOfSaleId { get; set; } = null!;
+
+        public SaleType? TypeOfSale { get; set; }
 
         [ForeignKey(nameof(ModeOfPayment))]
-        public string ModeOfPaymentId { get; set; }
-        
-        public PaymentType ModeOfPayment { get; set; }
+        public string ModeOfPaymentId { get; set; } = null!;
+
+        public PaymentType? ModeOfPayment { get; set; }
 
         [StringLength(50)]
         [Required]
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
 
         [StringLength(50)] public string? CustomerPhoneNumber { get; set; }
 

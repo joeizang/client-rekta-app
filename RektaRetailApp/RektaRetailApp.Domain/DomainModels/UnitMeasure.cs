@@ -10,8 +10,8 @@ namespace RektaRetailApp.Domain.DomainModels
     {
         [Key]
         [Column(TypeName = "text")]
-        public string Type { get; set; }
-        
+        public string Type { get; set; } = null!;
+
         [StringLength(300)]
         [Column(TypeName = "text")]
         public string? Description { get; set; }

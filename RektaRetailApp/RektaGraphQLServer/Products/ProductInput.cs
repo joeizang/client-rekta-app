@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HotChocolate;
 using HotChocolate.Types.Relay;
 using RektaRetailApp.Domain.DomainModels;
 
@@ -13,4 +14,10 @@ namespace RektaGraphQLServer.Products
         [ID(nameof(ProductPrice))] int ProductPriceId,
         [ID(nameof(ProductCategory))] IReadOnlyList<int> ProductCategoryIds
     );
+
+    public record UpdateProductInput(
+        [ID(nameof(Product))] int Id,
+        Optional<string?> Name, Optional<DateTimeOffset?> SupplyDate,
+        Optional<float?> Quantity, Optional<string?> Brand, Optional<string?> ImageUrl,
+        Optional<string?> Comments);
 }

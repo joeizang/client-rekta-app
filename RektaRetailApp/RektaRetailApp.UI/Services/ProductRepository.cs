@@ -24,7 +24,7 @@ namespace RektaRetailApp.UI.Services
         private readonly IMapper _mapper;
         private readonly DbSet<Product> _set;
         public ProductRepository(IHttpContextAccessor accessor,
-            RektaContext db, IMapper mapper) : base(accessor,db)
+            RektaContext db, IMapper mapper) : base(accessor, db)
         {
             _db = db;
             _mapper = mapper;
@@ -39,7 +39,7 @@ namespace RektaRetailApp.UI.Services
                 products = products.Where(p => p.Brand!.Contains(query.SearchTerm.Trim().ToUpperInvariant())
                                                || p.Name.Contains(query.SearchTerm.Trim().ToUpperInvariant()));
                 var temp = new List<ProductApiModel>();
-                
+
                 // tempPaged = products.Select(p => new ProductApiModel(p.Name,p.SupplierId,
                 //     p.Quantity, p.CostPrice, p.UnitPrice, p.RetailPrice, p.Id));
                 var paged = await PagedList<Product>
@@ -102,7 +102,7 @@ namespace RektaRetailApp.UI.Services
             target.Brand = command.Brand?.Trim().ToUpperInvariant();
             target.Name = command.Name.Trim().ToUpperInvariant();
             target.Quantity = command.Quantity;
-            target.Price.RetailPrice = command.RetailPrice;
+            target.Price!.RetailPrice = command.RetailPrice;
             target.Price.CostPrice = command.CostPrice;
             target.UnitMeasure = command.UnitMeasure;
             target.Verified = command.Verified;
@@ -117,11 +117,11 @@ namespace RektaRetailApp.UI.Services
 
         public void DeleteProductAsync(DeleteProductCommand command)
         {
-                var product = _set.Find(command.Id);
-                if (product is null)
-                    throw new ArgumentException("The id given doesn't belong to a real product!");
-                product.IsDeleted = true;
-                _db.Entry(product).State = EntityState.Modified;
+            var product = _set.Find(command.Id);
+            if (product is null)
+                throw new ArgumentException("The id given doesn't belong to a real product!");
+            product.IsDeleted = true;
+            _db.Entry(product).State = EntityState.Modified;
         }
         public async Task SaveAsync(CancellationToken token)
         {

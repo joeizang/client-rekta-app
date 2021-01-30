@@ -46,25 +46,25 @@ namespace RektaRetailApp.UI.Queries.Product
 
                 var temp = _uriGen.BaseUri;
                 var finalUri = $"{temp}/api/products";
-                
-                    var prev = _uriGen.AddQueryStringParams(finalUri,"pageNumber", (request.PageNumber - 1).ToString()!);
-                    prev.AddQueryStringParams(finalUri,"pageSize", request.PageSize.ToString()!);
-                    
-                    var nextL = _uriGen.AddQueryStringParams(finalUri,"pageNumber", (request.PageNumber + 1).ToString()!);
-                    nextL.AddQueryStringParams(finalUri,"pageSize", request.PageSize.ToString()!);
 
-                    var prevLink = products.HasPrevious
-                        ? prev.GenerateUri() : null;
-                    var nextLink = products.HasNext
-                        ? nextL.GenerateUri() : null;
+                var prev = _uriGen.AddQueryStringParams(finalUri, "pageNumber", (request.PageNumber - 1).ToString()!);
+                prev.AddQueryStringParams(finalUri, "pageSize", request.PageSize.ToString()!);
+
+                var nextL = _uriGen.AddQueryStringParams(finalUri, "pageNumber", (request.PageNumber + 1).ToString()!);
+                nextL.AddQueryStringParams(finalUri, "pageSize", request.PageSize.ToString()!);
+
+                var prevLink = products.HasPrevious
+                    ? prev.GenerateUri() : null;
+                var nextLink = products.HasNext
+                    ? nextL.GenerateUri() : null;
 
                 var projectedProducts = new List<ProductApiModel>();
-                
+
                 for (var i = 0; i < products.Count; i++)
                 {
                     var projected = new ProductApiModel(
-                        products[i].Name, products[i].SupplierId, products[i].Quantity, products[i].Price.CostPrice,
-                        products[i].Price.UnitPrice, products[i].Price.RetailPrice, products[i].Id);
+                        products[i].Name, products[i].SupplierId, products[i].Quantity, products[i].Price!.CostPrice,
+                        products[i].Price!.UnitPrice, products[i].Price!.RetailPrice, products[i].Id);
                     projectedProducts.Add(projected);
                 }
 

@@ -34,7 +34,7 @@ namespace RektaRetailApp.UI.Commands.Product
 
         public string? Comments { get; set; }
 
-        public UnitMeasure UnitMeasure { get; set; }
+        public UnitMeasure? UnitMeasure { get; set; }
 
         public bool Verified { get; set; }
 

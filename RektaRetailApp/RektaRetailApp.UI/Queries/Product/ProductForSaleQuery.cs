@@ -33,7 +33,7 @@ namespace RektaRetailApp.UI.Queries.Product
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Price = p.Price.RetailPrice
+                        Price = p.Price!.RetailPrice
                     }).ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
                 var result = new ApiModel.Response<IEnumerable<ProductsForSaleApiModel>>(work, ResponseStatus.Success);
@@ -42,7 +42,7 @@ namespace RektaRetailApp.UI.Queries.Product
             catch (Exception e)
             {
                 return new ApiModel.Response<IEnumerable<ProductsForSaleApiModel>>(
-                    new List<ProductsForSaleApiModel>(), ResponseStatus.Error, new { ErrorMessage = e.Message} );
+                    new List<ProductsForSaleApiModel>(), ResponseStatus.Error, new { ErrorMessage = e.Message });
             }
         }
     }

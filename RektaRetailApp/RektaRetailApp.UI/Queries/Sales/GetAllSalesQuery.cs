@@ -11,14 +11,14 @@ using RektaRetailApp.UI.Helpers;
 
 namespace RektaRetailApp.UI.Queries.Sales
 {
-        public class GetAllSalesQuery : IRequest<PaginatedResponse<SaleApiModel>>, IRequest<Response<SaleDetailApiModel>>
+    public class GetAllSalesQuery : IRequest<PaginatedResponse<SaleApiModel>>, IRequest<Response<SaleDetailApiModel>>
     {
         public int PageSize { get; set; }
 
         public int PageNumber { get; set; }
 
         public string? SearchTerm { get; set; }
-        
+
         /// <summary>
         /// Default OrderBy term is "Date" unless otherwise stated
         /// </summary>
@@ -27,7 +27,7 @@ namespace RektaRetailApp.UI.Queries.Sales
 
 
 
-    public class GetAllSalesQueryHandler : IRequestHandler<GetAllSalesQuery,PaginatedResponse<SaleApiModel>>
+    public class GetAllSalesQueryHandler : IRequestHandler<GetAllSalesQuery, PaginatedResponse<SaleApiModel>>
     {
         private readonly ISalesRepository _repo;
         private readonly IUriGenerator _uriGen;
@@ -44,14 +44,14 @@ namespace RektaRetailApp.UI.Queries.Sales
                 var temp = _uriGen.BaseUri;
                 var finalUri = $"{temp}/api/sales";
                 var sales = await _repo.GetAllSales(request, cancellationToken).ConfigureAwait(false);
-                
+
                 var prev = _uriGen
                     .AddQueryStringParams(finalUri, "pageNumber", (request.PageNumber - 1).ToString()!);
-                prev.AddQueryStringParams(finalUri,"pageSize", request.PageSize.ToString()!);
-                
-                var nextL = _uriGen.AddQueryStringParams(finalUri,"pageNumber", (request.PageNumber + 1).ToString()!);
-                nextL.AddQueryStringParams(finalUri,"pageSize", request.PageSize.ToString()!);
-                
+                prev.AddQueryStringParams(finalUri, "pageSize", request.PageSize.ToString()!);
+
+                var nextL = _uriGen.AddQueryStringParams(finalUri, "pageNumber", (request.PageNumber + 1).ToString()!);
+                nextL.AddQueryStringParams(finalUri, "pageSize", request.PageSize.ToString()!);
+
                 var prevLink = sales.HasPrevious
                     ? prev.GenerateUri() : null;
                 var nextLink = sales.HasNext
@@ -76,7 +76,7 @@ namespace RektaRetailApp.UI.Queries.Sales
                         {
                             Id = sales[i].ProductSold[j].Id,
                             ItemName = sales[i].ProductSold[j].Name,
-                            Price = sales[i].ProductSold[j].Price.RetailPrice,
+                            Price = sales[i].ProductSold[j].Price!.RetailPrice,
                             Quantity = sales[i].ProductSold[j].Quantity
                         };
                         items.Add(item);
@@ -84,7 +84,7 @@ namespace RektaRetailApp.UI.Queries.Sales
                     apiModel.ProductsBought.AddRange(items);
                     salesApiModel.Add(apiModel);
                 }
-                
+
                 var result = new PaginatedResponse<SaleApiModel>(salesApiModel,
                     sales.TotalCount, sales.PageSize, sales.CurrentPage,
                     prevLink?.PathAndQuery, nextLink?.PathAndQuery, ResponseStatus.Success);
@@ -93,7 +93,7 @@ namespace RektaRetailApp.UI.Queries.Sales
             }
             catch (Exception e)
             {
-                return new PaginatedResponse<SaleApiModel>(new PagedList<SaleApiModel>(), 0, 10, 1, "","",ResponseStatus.Error, new { ErrorMessage = e.Message});
+                return new PaginatedResponse<SaleApiModel>(new PagedList<SaleApiModel>(), 0, 10, 1, "", "", ResponseStatus.Error, new { ErrorMessage = e.Message });
             }
         }
     }

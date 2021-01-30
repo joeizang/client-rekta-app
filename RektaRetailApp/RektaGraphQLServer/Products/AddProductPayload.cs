@@ -10,11 +10,13 @@ namespace RektaGraphQLServer.Products
             Product = product;
         }
 
-        public AddProductPayload(UserError error) : base(new [] { error})
+        public AddProductPayload(UserError error) : base(new[] { error })
         {
-            
+
         }
 
         public Product? Product { get; set; }
+
+
     }
 }

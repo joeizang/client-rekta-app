@@ -20,11 +20,9 @@ namespace RektaRetailApp.UI.ApiModel.Sales
 
         public string SalesPerson { get; set; } = null!;
 
-        [JsonConverter(typeof(PaymentType))]
-        public PaymentType TypeOfPayment { get; set; }
+        public PaymentType? TypeOfPayment { get; set; }
 
-        [JsonConverter(typeof(SaleType))]
-        public SaleType TypeOfSale { get; set; }
+        public SaleType? TypeOfSale { get; set; }
 
         public List<ItemSoldApiModel> ProductsBought { get; set; }
 
@@ -59,9 +57,9 @@ namespace RektaRetailApp.UI.ApiModel.Sales
 
         public List<ItemSoldApiModel> ProductsBought { get; set; }
 
-        public SaleType SaleType { get; set; }
+        public SaleType? SaleType { get; set; }
 
-        public PaymentType PaymentType { get; set; }
+        public PaymentType? PaymentType { get; set; }
     }
 
     public class ItemSoldApiModel

@@ -24,13 +24,13 @@ namespace RektaRetailApp.Domain.DomainModels
         public string? Description { get; set; }
 
         [ForeignKey(nameof(UnitAmount))]
-        public string UnitMeasureId { get; set; }
-        
-        public UnitMeasure UnitAmount { get; set; }
+        public string UnitMeasureId { get; set; } = null!;
+
+        public UnitMeasure? UnitAmount { get; set; }
 
         public decimal TotalCostValue { get; private set; }
 
-        public float Quantity => InventoryItems.Sum(q => q.Quantity);
+        public float Quantity { get; set; }
 
         public bool Verified { get; set; }
 
@@ -51,12 +51,21 @@ namespace RektaRetailApp.Domain.DomainModels
         {
             if (InventoryItems.Any())
             {
-                TotalCostValue = InventoryItems.Sum(x => x.Price.CostPrice);
-                TotalRetailValue = InventoryItems.Sum(x => x.Price.RetailPrice);
+                TotalCostValue = InventoryItems.Sum(x => x.Price!.CostPrice);
+                TotalRetailValue = InventoryItems.Sum(x => x.Price!.RetailPrice);
 
             }
         }
 
         public decimal TotalRetailValue { get; private set; }
+
+        public float GetCurrentNumberOfProductsInStock(Func<object, bool>? filter)
+        {
+            if (filter is null)
+                return InventoryItems.Count;
+            var result = InventoryItems.Where(filter)
+                .Count();
+            return result;
+        }
     }
 }

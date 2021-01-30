@@ -8,7 +8,7 @@ using RektaRetailApp.UI.ApiModel.Sales;
 
 namespace RektaRetailApp.UI.Queries.Sales
 {
-        public class GetSaleByIdQuery : IRequest<Response<SaleDetailApiModel>>
+    public class GetSaleByIdQuery : IRequest<Response<SaleDetailApiModel>>
     {
         public int Id { get; set; }
     }
@@ -28,13 +28,13 @@ namespace RektaRetailApp.UI.Queries.Sales
             {
                 var sale = await _repo.GetSaleById(request, cancellationToken).ConfigureAwait(false);
                 var result = new Response<SaleDetailApiModel>(
-                    new SaleDetailApiModel(sale.Id, sale.SalesPersonId, sale.SaleDate, sale.TypeOfSale, sale.ModeOfPayment),
+                    new SaleDetailApiModel(sale.Id, sale.SalesPersonId, sale.SaleDate, sale.TypeOfSale!, sale.ModeOfPayment!),
                     ResponseStatus.Success);
                 return result;
             }
             catch (Exception e)
             {
-                return new Response<SaleDetailApiModel>(new SaleDetailApiModel(),ResponseStatus.Error, new { ErrorMessage = e.Message } );
+                return new Response<SaleDetailApiModel>(new SaleDetailApiModel(), ResponseStatus.Error, new { ErrorMessage = e.Message });
             }
         }
     }

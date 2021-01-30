@@ -17,7 +17,7 @@ namespace RektaRetailApp.UI.Commands.Product
 {
     public class CreateProductCommand : IRequest<Response<ProductDetailApiModel>>
     {
-         public string Name { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         public decimal RetailPrice { get; set; }
 
@@ -32,12 +32,12 @@ namespace RektaRetailApp.UI.Commands.Product
         public string? Brand { get; set; }
 
         public string? ImageUrl { get; set; }
-        
+
         public DateTimeOffset SupplyDate { get; set; }
 
         public int InventoryId { get; set; }
 
-        public UnitMeasure UnitMeasure { get; set; }
+        public UnitMeasure? UnitMeasure { get; set; }
 
         public bool Verified { get; set; }
 
@@ -64,9 +64,9 @@ namespace RektaRetailApp.UI.Commands.Product
             {
                 var includes = new Expression<Func<Domain.DomainModels.Product, object>>[]
                 {
-                    p => p.ProductCategories,
+                    p => p.ProductCategories!,
                     p => p.Supplier!,
-                    p => p.Price
+                    p => p.Price!
                 };
                 await _repo.CreateProductAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -74,11 +74,11 @@ namespace RektaRetailApp.UI.Commands.Product
 
                 var product = await _repo.GetProductByAsync(cancellationToken, includes,
                     p => p.Name.Equals(request.Name.ToUpperInvariant()),
-                    p => p.Price.RetailPrice == request.RetailPrice, p => p.Price.CostPrice == request.CostPrice);
+                    p => p.Price!.RetailPrice == request.RetailPrice, p => p.Price!.CostPrice == request.CostPrice);
 
-                var model = new ProductDetailApiModel(product.Price.RetailPrice, product.Price.UnitPrice, product.Name, product.Quantity,
+                var model = new ProductDetailApiModel(product.Price!.RetailPrice, product.Price.UnitPrice, product.Name, product.Quantity,
                     product.Price.CostPrice, product.Supplier?.Name, product.Supplier?.MobileNumber,
-                    product.ImageUrl,  product.SupplyDate, product.Id);
+                    product.ImageUrl, product.SupplyDate, product.Id);
                 var result = new Response<ProductDetailApiModel>(model, ResponseStatus.Success);
                 var createEvent = new ProductCreateEvent(model);
                 await _mediator.Publish(createEvent, cancellationToken);

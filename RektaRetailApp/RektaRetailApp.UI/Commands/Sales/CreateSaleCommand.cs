@@ -28,10 +28,10 @@ namespace RektaRetailApp.UI.Commands.Sales
         public decimal GrandTotal { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public SaleType SaleType { get; set; }
+        public SaleType? SaleType { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public PaymentType PaymentType { get; set; }
+        public PaymentType? PaymentType { get; set; }
     }
 
 
@@ -58,7 +58,7 @@ namespace RektaRetailApp.UI.Commands.Sales
                 };
                 await _repo.CreateSale(request, cancellationToken).ConfigureAwait(false);
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);
-                var thisSale = await _repo.GetOneBy(cancellationToken,include, s => s.SaleDate.Equals(request.SaleDate),
+                var thisSale = await _repo.GetOneBy(cancellationToken, include, s => s.SaleDate.Equals(request.SaleDate),
                     s => s.GrandTotal.Equals(request.GrandTotal), s => s.SubTotal.Equals(request.SubTotal)).ConfigureAwait(false);
                 var sale = _mapper.Map<SaleApiModel>(thisSale);
                 var result = new Response<SaleApiModel>(sale, ResponseStatus.Success);
