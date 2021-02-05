@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using RektaRetailApp.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RektaRetailApp.Domain.Data;
+using RektaRetailApp.Domain.DomainModels;
 
 namespace RektaRetailApp.Web
 {
@@ -29,9 +29,8 @@ namespace RektaRetailApp.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RektaContext>(options =>
-                options
-                    .UseNpgsql(
-                        Configuration.GetConnectionString("NpgsqlConnection"),
+                options.UseNpgsql(
+                        Configuration.GetConnectionString("DefaultConnection"),
                         n => n.MigrationsAssembly("RektaRetailApp.Web")).EnableSensitiveDataLogging());
             services.AddDatabaseDeveloperPageExceptionFilter();
 
