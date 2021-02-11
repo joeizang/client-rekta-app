@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RektaRetailApp.Domain.Abstractions;
 
 namespace RektaRetailApp.Domain.DomainModels
@@ -21,6 +22,9 @@ namespace RektaRetailApp.Domain.DomainModels
         public DateTimeOffset? DateOfBirth { get; set; }
 
         [Required]
-        public CustomerStatus CustomerStatus { get; set; }
+        public CustomerStatus? CustomerStatus { get; set; }
+
+        [ForeignKey(nameof(CustomerStatus))]
+        public string? CustomerStatusId { get; set; }
     }
 }

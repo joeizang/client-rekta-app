@@ -1,20 +1,18 @@
 ﻿using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RektaRetailApp.Domain.DomainModels;
 
 namespace RektaRetailApp.Domain.Data
 {
-    public class RektaContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class RektaContext : IdentityDbContext<ApplicationUser>
     {
-        private IOptions<OperationalStoreOptions> OperationalStoreOptions { get; }
 
-        public RektaContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        public RektaContext(DbContextOptions<RektaContext> options) : base(options)
         {
-            OperationalStoreOptions = operationalStoreOptions;
+            
         }
 
         public DbSet<Sale> Sales { get; set; } = default!;
@@ -24,6 +22,8 @@ namespace RektaRetailApp.Domain.Data
         public DbSet<Customer> Customers { get; set; } = default!;
 
         public DbSet<Product> Products { get; set; } = default!;
+
+        public DbSet<ProductForSale> ProductsForSale { get; set; } = default!;
 
         public DbSet<ProductPrice> ProductPrices { get; set; } = default!;
 
@@ -44,6 +44,8 @@ namespace RektaRetailApp.Domain.Data
         public DbSet<SaleType> SaleTypes { get; set; } = default!;
 
         public DbSet<UnitMeasure> UnitMeasures { get; set; } = default!;
+
+        public DbSet<CustomerStatus> CustomerStatuses { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -82,7 +84,7 @@ namespace RektaRetailApp.Domain.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Sale>()
-                .HasMany(s => s.ProductSold)
+                .HasMany(s => s.ProductsForSale)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 

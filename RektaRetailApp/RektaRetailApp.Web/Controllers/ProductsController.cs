@@ -9,6 +9,7 @@ using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Product;
 using RektaRetailApp.Web.Commands.Product;
 using RektaRetailApp.Web.Queries.Product;
+using RektaRetailApp.Web.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

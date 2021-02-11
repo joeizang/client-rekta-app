@@ -18,11 +18,11 @@ namespace RektaGraphQLServer.Sales
         public async Task<AddSalesPayload> AddSaleAsync(
             AddSalesInput input, [ScopedService] RektaContext context, CancellationToken token)
         {
-            var products = new List<Product>();
+            var products = new List<ProductForSale>();
 
             foreach (var productId in input.ProductIds)
             {
-                products.Add(new Product{ Id = productId });
+                products.Add(new ProductForSale{ Id = productId });
             }
 
             var sale = new Sale
@@ -35,7 +35,7 @@ namespace RektaGraphQLServer.Sales
                 SalesPersonId = input.SalesPersonId,
                 ModeOfPayment = input.TypeOfPayment,
                 TypeOfSale = input.TypeOfSale,
-                ProductSold = products
+                ProductsForSale = products
             };
 
             context.Sales.Add(sale);

@@ -1,0 +1,61 @@
+﻿@model RektaRetailApp.Web.ViewModel.Sales.MakeASaleViewModel
+
+@{
+    ViewData["Title"] = "MakeASale";
+}
+
+<h1>MakeASale</h1>
+
+<h4>Sale</h4>
+<hr />
+<div class="row">
+    @foreach (var item in Model.ProductsOnSale)
+    {
+        <div class="col-md-12">
+            <partial name="ItemToBeSold" model="item"/>
+        </div>
+    }
+    <div class="col-md-4">
+        <form asp-action="MakeASale">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SaleDate" class="control-label"></label>
+                <input asp-for="SaleDate" class="form-control"/>
+                <span asp-validation-for="SaleDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SubTotal" class="control-label"></label>
+                <input asp-for="SubTotal" class="form-control"/>
+                <span asp-validation-for="SubTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrandTotal" class="control-label"></label>
+                <input asp-for="GrandTotal" class="form-control"/>
+                <span asp-validation-for="GrandTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control"/>
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerPhoneNumber" class="control-label"></label>
+                <input asp-for="CustomerPhoneNumber" class="form-control"/>
+                <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,13 +1,13 @@
 using System;
-using RektaRetailApp.Web.ApiModel;
-using RektaRetailApp.Web.ApiModel.Product;
 using RektaRetailApp.Web.Helpers;
+using RektaRetailApp.Web.ViewModel.Product;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.DomainEvents.Product
 {
         public class ProductCreateEvent : DomainEvent
     {
-        public ProductCreateEvent(ProductDetailApiModel model)
+        public ProductCreateEvent(ProductDetailViewModel model)
         {
             HappenedAt = DateTimeOffset.Now;
             ActionPerformed = TaskPerformed.Creation;

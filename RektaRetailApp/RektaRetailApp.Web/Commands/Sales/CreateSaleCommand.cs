@@ -12,6 +12,7 @@ using RektaRetailApp.Web.Abstractions.Entities;
 using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Sales;
 using RektaRetailApp.Web.DomainEvents.Sales;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.Commands.Sales
 {
@@ -27,10 +28,8 @@ namespace RektaRetailApp.Web.Commands.Sales
 
         public decimal GrandTotal { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public SaleType? SaleType { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public PaymentType? PaymentType { get; set; }
     }
 
@@ -54,12 +53,13 @@ namespace RektaRetailApp.Web.Commands.Sales
             {
                 var include = new Expression<Func<Sale, object>>[]
                 {
-                    x => x.ProductSold
+                    x => x.ProductsForSale
                 };
                 await _repo.CreateSale(request, cancellationToken).ConfigureAwait(false);
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);
                 var thisSale = await _repo.GetOneBy(cancellationToken, include, s => s.SaleDate.Equals(request.SaleDate),
-                    s => s.GrandTotal.Equals(request.GrandTotal), s => s.SubTotal.Equals(request.SubTotal)).ConfigureAwait(false);
+                    s => s.GrandTotal.Equals(request.GrandTotal), s => s.SubTotal.Equals(request.SubTotal))
+                    .ConfigureAwait(false);
                 var sale = _mapper.Map<SaleViewModel>(thisSale);
                 var result = new Response<SaleViewModel>(sale, ResponseStatus.Success);
                 var createSaleEvent = new SaleCreateEvent(sale);

@@ -21,7 +21,7 @@ namespace RektaRetailApp.Web.Abstractions
             _db = db;
         }
 
-        public async Task Commit<T>(CancellationToken token) where T : BaseDomainModel
+        public async Task<T> Commit<T>(CancellationToken token) where T : BaseDomainModel
         {
             var user = _accessor?.HttpContext?.User?.Identity?.Name ?? "Anonymous User";
             foreach (var entity in _db.ChangeTracker.Entries<T>())
@@ -47,7 +47,11 @@ namespace RektaRetailApp.Web.Abstractions
                 }
             }
 
-            await _db.SaveChangesAsync(token).ConfigureAwait(false);
+            var savedId = await _db.SaveChangesAsync(token).ConfigureAwait(false);
+            var successfulEntity = await _db.Set<T>().AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == savedId, token)
+                .ConfigureAwait(false);
+            return successfulEntity;
         }
 
         public async Task<T> GetOneBy<T>(CancellationToken token, Expression<Func<T, object>>[]? includes = null,

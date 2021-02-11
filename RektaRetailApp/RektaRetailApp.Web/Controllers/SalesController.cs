@@ -6,12 +6,12 @@ using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Sales;
 using RektaRetailApp.Web.Commands.Sales;
 using RektaRetailApp.Web.Queries.Sales;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.Controllers
 {
-    [Route("api/sales")]
-    [ApiController]
-    public class SalesController : ControllerBase
+
+    public class SalesController : Controller
     {
         private readonly IMediator _mediator;
 
@@ -20,16 +20,16 @@ namespace RektaRetailApp.Web.Controllers
             _mediator = mediator;
         }
         // GET: api/<SalesController>
-        [HttpGet(Name="GetAllSales")]
-        public async Task<ActionResult<PaginatedResponse<SaleViewModel>>> Get([FromQuery]GetAllSalesQuery query,
+        [HttpGet]
+        public async Task<ActionResult<PaginatedResponse<SaleViewModel>>> Index([FromQuery]GetAllSalesQuery query,
             CancellationToken token)
         {
             var result = await _mediator.Send(query, token).ConfigureAwait(false);
-            return Ok(result);
+            return View(result);
         }
 
         // GET api/<SalesController>/5
-        [HttpGet("{id}", Name = "GetSaleById")]
+        [HttpGet("{id}", Name = "GetSaleById")] 
         public async Task<ActionResult<Response<SaleDetailViewModel>>> Get([FromQuery]GetSaleByIdQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token).ConfigureAwait(false);
@@ -41,12 +41,27 @@ namespace RektaRetailApp.Web.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public ActionResult MakeASale()
+        {
+            var saleViewModel = new MakeASaleViewModel();
+            return View(saleViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult ItemToBeSold()
+        {
+
+            return PartialView();
+        }
+
         // POST api/<SalesController>
         [HttpPost]
-        public async Task<ActionResult<Response<SaleViewModel>>> Post([FromBody] CreateSaleCommand command, CancellationToken token)
+        public async Task<ActionResult> MakeASale([FromBody] CreateSaleCommand command, CancellationToken token)
         {
-            var result = await _mediator.Send(command, token).ConfigureAwait(false);
-            return CreatedAtRoute("GetSaleById", new { result.Data.Id }, result);
+            var result = await _mediator.Send(command, token)
+                .ConfigureAwait(false);
+            return RedirectToAction(nameof(Index));
         }
 
         // PUT api/<SalesController>/5

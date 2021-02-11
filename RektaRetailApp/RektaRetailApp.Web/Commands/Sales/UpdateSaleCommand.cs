@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Sales;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.Commands.Sales
 {

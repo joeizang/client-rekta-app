@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
-using RektaRetailApp.Web.ApiModel;
-using RektaRetailApp.Web.Helpers;
+﻿using RektaRetailApp.Web.Helpers;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.DomainEvents.Supplier
 {

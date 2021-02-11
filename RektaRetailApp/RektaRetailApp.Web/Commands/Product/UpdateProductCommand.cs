@@ -10,6 +10,7 @@ using RektaRetailApp.Web.Abstractions.Entities;
 using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Product;
 using RektaRetailApp.Web.DomainEvents.Product;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.Commands.Product
 {

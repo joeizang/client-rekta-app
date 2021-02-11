@@ -23,7 +23,7 @@ namespace RektaGraphQLServer.Types
                 .ResolveNode((ctx, id) => ctx.DataLoader<SalesByIdDataLoader>()
                     .LoadAsync(id, ctx.RequestAborted));
             descriptor
-                .Field(t => t.ProductSold)
+                .Field(t => t.ProductsForSale)
                 .ResolveWith<SaleResolvers>(t => 
                     t.GetSalesAsync(default!, default!, default!, default))
                 .UseDbContext<RektaContext>()
@@ -41,8 +41,8 @@ namespace RektaGraphQLServer.Types
         {
             var soldProducts = await context.Sales
                 .Where(s => s.Id == sale.Id)
-                .Include(s => s.ProductSold)
-                .SelectMany(s => s.ProductSold.Select(p => p.Id))
+                .Include(s => s.ProductsForSale)
+                .SelectMany(s => s.ProductsForSale.Select(p => p.Id))
                 .ToArrayAsync(token);
             return await productById.LoadAsync(soldProducts, token);
         }

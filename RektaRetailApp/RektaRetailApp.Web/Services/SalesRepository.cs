@@ -31,9 +31,8 @@ namespace RektaRetailApp.Web.Services
 
         public async Task CreateSale(CreateSaleCommand command, CancellationToken token)
         {
-            var products = _db.Products.Include(p => p.Inventory);
+            var products = _db.ProductsForSale;
             var sale = _mapper.Map<Sale>(command);
-            var items = _db.Products;
             //make deductions from the quantity of every product that has been sold
             foreach(var p in command.ProductsSold)
             {
@@ -41,19 +40,10 @@ namespace RektaRetailApp.Web.Services
                     .ConfigureAwait(false);
 
                 product.Quantity -= p.Quantity;
-                //if (product.Inventory != null) product.Inventory.Quantity -= p.Quantity;
                 _db.Entry(product).State = EntityState.Modified;
-                // var item = new ItemSold
-                // {
-                //     ItemName = p.ItemName,
-                //     Quantity = p.Quantity,
-                //     Price = p.Price,
-                //     ProductId = product.Id
-                // };
-                // await items.AddAsync(item, token).ConfigureAwait(false);
             }
             //if there are any discounts then you can calculate before persisting.
-            sale.ProductSold.AddRange(items!);
+            sale.ProductsForSale.AddRange(products!);
             await _set.AddAsync(sale, token).ConfigureAwait(false);
         }
 
@@ -73,8 +63,9 @@ namespace RektaRetailApp.Web.Services
             var queryable = _set.AsNoTracking();
 
             //TODO: BUILD YOUR DIFFERENT QUERIES ON THE IQUERYABLE INSTANCE TO SEARCH FILTER AND ORDER
-            if (query.SearchTerm is null && query.OrderByTerm is null)
+            if (string.IsNullOrEmpty(query.SearchTerm))
             {
+                //default query is performed.
                 var result = new PagedList<Sale>(
                         await queryable.CountAsync(token)
                             .ConfigureAwait(false), query.PageNumber, query.PageSize,
@@ -82,22 +73,13 @@ namespace RektaRetailApp.Web.Services
                     return result;
             }
 
+            //If we are here then SearchTerm and Orderby term are not null or empty
             var parsedTotal = decimal.Parse(query.SearchTerm!);
             var parsedDate = DateTimeOffset.Parse(query.SearchTerm!);
             queryable = queryable.Where(s => s.SalesPersonId.Equals(query.SearchTerm) 
-                                             || s.SaleDate.Equals(parsedDate) || s.GrandTotal.Equals(parsedTotal));
+                                             || s.SaleDate.Equals(parsedDate) 
+                                             || s.GrandTotal.Equals(parsedTotal));
             queryable = queryable.OrderBy(x => x.SaleDate);
-            //TODO: ALSO FACTOR IN THAT YOUR RESULT MUST BE PAGINATED.
-            // queryable.Select(x => new SaleViewModel
-            // {
-            //     GrandTotal = x.GrandTotal,
-            //     Id = x.Id,
-            //     NumberOfItemsSold = x.ItemsSold.Count,
-            //     SaleDate = x.SaleDate,
-            //     SalesPerson = x.SalesPersonId,
-            //     TypeOfPayment = x.ModeOfPayment,
-            //     TypeOfSale = x.TypeOfSale
-            // }),
             var processedResult = await PagedList<Sale>.CreatePagedList(queryable,
                  query.PageNumber, query.PageSize, token).ConfigureAwait(false);
             return processedResult;

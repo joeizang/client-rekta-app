@@ -1,6 +1,6 @@
 using System;
-using RektaRetailApp.Web.ApiModel;
 using RektaRetailApp.Web.Helpers;
+using RektaRetailApp.Web.ViewModels;
 
 namespace RektaRetailApp.Web.DomainEvents.Product
 {

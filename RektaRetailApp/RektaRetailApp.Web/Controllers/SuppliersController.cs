@@ -11,13 +11,13 @@ using RektaRetailApp.Web.ViewModel.Supplier;
 using RektaRetailApp.Web.Commands.Supplier;
 using RektaRetailApp.Web.Helpers;
 using RektaRetailApp.Web.Queries.Supplier;
+using RektaRetailApp.Web.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RektaRetailApp.Web.Controllers
 {
-    [Route("api/suppliers")]
-    [ApiController]
+    [Controller]
     public class SuppliersController : ControllerBase
     {
         private readonly IMediator _mediator;
