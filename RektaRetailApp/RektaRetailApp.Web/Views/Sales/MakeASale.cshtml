@@ -1,7 +1,27 @@
-﻿@model RektaRetailApp.Web.ViewModel.Sales.MakeASaleViewModel
+﻿@using RektaRetailApp.Web.ViewModel.Sales
+@model RektaRetailApp.Web.ViewModel.Sales.MakeASaleViewModel
 
 @{
     ViewData["Title"] = "MakeASale";
+    var items = new List<ItemSoldViewModel>()
+    {
+        new ItemSoldViewModel()
+        {
+            Id = 1, ItemName = "Rice & Stew", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 2, ItemName = "Pounded Yam & Draw Soup", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 3, ItemName = "Shawarma", Price = 800m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 4, ItemName = "Meat Pie", Price = 500m, Quantity = 20d, ProductImage = ""
+        }
+    };
 }
 
 <h1>Make A Sale</h1>
@@ -9,10 +29,10 @@
 
 <hr />
 <div class="row">
-    @foreach (var item in Model.ProductsOnSale)
+    @foreach (var item in items)
     {
-        <div class="col-md-12">
-            <partial name="ItemToBeSold" model="item"/>
+        <div class="card-group">
+            <partial name="_ItemToBeSold" model="item"/>
         </div>
     }
     <div class="col-md-12 d-flex justify-content-center">
@@ -58,4 +78,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script type="text/javascript">
+        var calculateQuantities = function() {
+            $(function() {
+
+            })
+        }
+    </script>
 }

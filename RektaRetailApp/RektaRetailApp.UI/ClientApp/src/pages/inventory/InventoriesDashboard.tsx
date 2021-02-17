@@ -10,15 +10,20 @@ export const InventoriesDashboard: FC<DashboardProps> = () => {
     return (
         <Fragment>
             <Grid container spacing={3}>
-                {/* Chart */}
+                { /* Chart */
+                }
                 <Grid item xs={12} md={8} lg={9}>
-                    <Paper className={classes.fixedHeightPaper}>{/* <Chart /> */}</Paper>
+                    <Paper className={classes.fixedHeightPaper}>{ /* <Chart /> */
+                    }</Paper>
                 </Grid>
-                {/* Recent Deposits */}
+                { /* Recent Deposits */
+                }
                 <Grid item xs={12} md={4} lg={3}>
-                    <Paper className={classes.fixedHeightPaper}>{/* <Deposits /> */}</Paper>
+                    <Paper className={classes.fixedHeightPaper}>{ /* <Deposits /> */
+                    }</Paper>
                 </Grid>
-                {/* Recent Orders */}
+                { /* Recent Orders */
+                }
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <Typography variant="h3">
@@ -28,5 +33,5 @@ export const InventoriesDashboard: FC<DashboardProps> = () => {
                 </Grid>
             </Grid>
         </Fragment>
-    )
+    );
 }
