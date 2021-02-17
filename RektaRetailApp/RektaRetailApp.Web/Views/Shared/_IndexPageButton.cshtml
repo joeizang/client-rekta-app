@@ -1,0 +1,16 @@
+﻿@using System.Diagnostics
+@model ButtonModel
+
+@{
+    var classes = "";
+
+    foreach (var c in Model.CssClasses)
+    {
+        classes += $"{c} ";
+    }
+    
+}
+
+
+<a asp-action="@Model.AspActionName" class="@classes">@Model.ButtonText <span><i class="@Model.BootstrapIconClass"></i></span></a>
+

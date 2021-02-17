@@ -19,7 +19,7 @@ namespace RektaRetailApp.Web.ViewModels
 
         public Response(T data, string currentResponseStatus, dynamic errors = null!)
         {
-            Data = data ?? throw new ArgumentException("the first argument is in an invalid state!");
+            Data = data;
             CurrentResponseStatus = currentResponseStatus;
             if (errors == null || CurrentResponseStatus == ResponseStatus.Success) return;
             Errors?.Add(errors);

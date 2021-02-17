@@ -1,46 +1,51 @@
-﻿@model IEnumerable<RektaRetailApp.Web.ViewModel.Sales.SaleViewModel>
+﻿@model RektaRetailApp.Web.ViewModel.PaginatedResponse<RektaRetailApp.Web.ViewModel.Sales.SaleViewModel>
 
 @{
     ViewData["Title"] = "Index";
+    var classes = new List<string> {"btn", "btn-primary"};
+    var button = new ButtonModel
+    {
+        AspActionName = "MakeASale",
+        ButtonText = "Make A Sale",
+        CssClasses = classes,
+        BootstrapIconClass = "bi-plus-circle"
+    };
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <partial model="button" name="_IndexPageButton" />
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SaleDate)
+                Sales ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Sales Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GrandTotal)
+                Number of Items Sold
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfItemsSold)
+                Sales Person
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SalesPerson)
+                Total
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Data) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaleDate)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GrandTotal)
+                @Html.DisplayFor(modelItem => item.SaleDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfItemsSold)
@@ -49,9 +54,12 @@
                 @Html.DisplayFor(modelItem => item.SalesPerson)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.GrandTotal)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>
         </tr>
 }

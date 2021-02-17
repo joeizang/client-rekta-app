@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Sales;
 using RektaRetailApp.Web.Commands.Sales;
@@ -14,23 +15,24 @@ namespace RektaRetailApp.Web.Controllers
     public class SalesController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<SalesController> _logger;
 
-        public SalesController(IMediator mediator)
+        public SalesController(IMediator mediator, ILogger<SalesController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
-        // GET: api/<SalesController>
-        [HttpGet]
-        public async Task<ActionResult<PaginatedResponse<SaleViewModel>>> Index([FromQuery]GetAllSalesQuery query,
-            CancellationToken token)
+        // GET: Sales
+        
+        public async Task<IActionResult> Index(GetAllSalesQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token).ConfigureAwait(false);
             return View(result);
         }
 
-        // GET api/<SalesController>/5
-        [HttpGet("{id}", Name = "GetSaleById")] 
-        public async Task<ActionResult<Response<SaleDetailViewModel>>> Get([FromQuery]GetSaleByIdQuery query, CancellationToken token)
+        // GET: Sales/5
+        
+        public async Task<IActionResult> Details(GetSaleByIdQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token).ConfigureAwait(false);
             if (result.CurrentResponseStatus.Equals(ResponseStatus.Error))
@@ -41,23 +43,24 @@ namespace RektaRetailApp.Web.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public ActionResult MakeASale()
+        //GET: Sales/MakeASale
+        public IActionResult MakeASale()
         {
             var saleViewModel = new MakeASaleViewModel();
             return View(saleViewModel);
         }
 
-        [HttpGet]
-        public ActionResult ItemToBeSold()
+
+        public IActionResult ItemToBeSold()
         {
 
             return PartialView();
         }
 
-        // POST api/<SalesController>
+        // POST: Sales/MakeASale
         [HttpPost]
-        public async Task<ActionResult> MakeASale([FromBody] CreateSaleCommand command, CancellationToken token)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> MakeASale(CreateSaleCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token)
                 .ConfigureAwait(false);

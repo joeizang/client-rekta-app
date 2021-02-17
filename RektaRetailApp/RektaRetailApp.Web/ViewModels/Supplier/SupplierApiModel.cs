@@ -37,6 +37,11 @@ namespace RektaRetailApp.Web.ViewModel.Supplier
             SupplierId = id;
         }
 
+        public SupplierDetailViewModel()
+        {
+            
+        }
+
         public int SupplierId { get; }
         public string? Name { get; }
 

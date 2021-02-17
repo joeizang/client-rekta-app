@@ -2,9 +2,6 @@
   "version": "1.0",
   "defaultProvider": "unpkg",
   "libraries": [
-    {
-      "library": "@fortawesome/fontawesome-free@5.15.2",
-      "destination": "wwwroot/fortawesome/fontawesome-free/"
-    }
+    
   ]
 }

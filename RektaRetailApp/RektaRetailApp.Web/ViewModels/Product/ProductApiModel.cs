@@ -41,6 +41,10 @@ public class ProductViewModel
 
     public class ProductsForSaleViewModel
     {
+        public ProductsForSaleViewModel()
+        {
+            
+        }
         public int Id { get; set; }
 
         public string? Name { get; set; }
@@ -50,6 +54,10 @@ public class ProductViewModel
 
     public class ProductSummaryViewModel
     {
+        public ProductSummaryViewModel()
+        {
+            
+        }
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;

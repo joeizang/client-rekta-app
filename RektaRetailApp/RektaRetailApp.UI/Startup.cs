@@ -59,8 +59,8 @@ namespace RektaRetailApp.UI
 
       services.AddTransient<IUriGenerator, UriGenerator>();
 
-      services.AddIdentityServer()
-          .AddApiAuthorization<ApplicationUser, RektaContext>();
+      //services.AddIdentityServer()
+      //    .AddApiAuthorization<ApplicationUser, RektaContext>();
 
       services.AddAuthentication()
           .AddIdentityServerJwt();

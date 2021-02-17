@@ -76,3 +76,10 @@ body {
     width: 200px;
     height: 200px;
 }
+
+
+/* style for submit form buttons */
+.submit-button {
+    display: flex;
+
+}

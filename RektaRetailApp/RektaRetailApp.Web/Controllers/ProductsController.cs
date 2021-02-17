@@ -27,8 +27,7 @@ namespace RektaRetailApp.Web.Controllers
         }
 
         // GET: api/<ProductsController>
-        [HttpGet(Name = "GetAllProducts")]
-        public async Task<ActionResult<PaginatedResponse<ProductViewModel>>> GetAllProducts([FromQuery] GetAllProductsQuery query, CancellationToken token)
+        public async Task<ActionResult<PaginatedResponse<ProductViewModel>>> Index([FromQuery] GetAllProductsQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token)
                 .ConfigureAwait(false);
@@ -36,8 +35,7 @@ namespace RektaRetailApp.Web.Controllers
         }
 
         // GET api/<ProductsController>/5
-        [HttpGet("{id}", Name = "GetProductById")]
-        public async Task<ActionResult<Response<ProductDetailViewModel>>> GetProductById(int id)
+        public async Task<ActionResult<Response<ProductDetailViewModel>>> Details(int id)
         {
             var result = await _mediator.Send(new ProductDetailQuery{ Id = id });
             return Ok(result);
