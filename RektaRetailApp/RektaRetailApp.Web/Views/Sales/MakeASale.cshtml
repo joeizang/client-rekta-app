@@ -20,6 +20,22 @@
         new ItemSoldViewModel()
         {
             Id = 4, ItemName = "Meat Pie", Price = 500m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 1, ItemName = "Rice & Stew", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 2, ItemName = "Pounded Yam & Draw Soup", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 3, ItemName = "Shawarma", Price = 800m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 4, ItemName = "Meat Pie", Price = 500m, Quantity = 20d, ProductImage = ""
         }
     };
 }
@@ -29,13 +45,15 @@
 
 <hr />
 <div class="row">
-    @foreach (var item in items)
-    {
+    <div class="col-md-9">
         <div class="card-group">
-            <partial name="_ItemToBeSold" model="item"/>
+            @foreach (var item in items)
+            {
+                <partial name="_ItemToBeSold" model="item"/>
+            }
         </div>
-    }
-    <div class="col-md-12 d-flex justify-content-center">
+    </div>
+    <div class="col-md-3 d-flex justify-content-center">
         <form asp-action="MakeASale">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

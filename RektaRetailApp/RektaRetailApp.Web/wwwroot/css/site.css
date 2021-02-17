@@ -71,15 +71,19 @@ body {
 }
 
 
-/* style for images in itemtobesold partial*/
+/* style for itemtobesold partial*/
 .sale-card-img {
-    width: 200px;
-    height: 200px;
+    margin: 0;
+}
+
+.sale-card-footer-margin {
+    margin: 0;
 }
 
 
-/* style for submit form buttons */
-.submit-button {
-    display: flex;
-
+/* Buttons style on items to be sold cards */
+.card-plus {
+    background-color: aquamarine;
+    border: none;
+    border-radius: 2px;
 }
