@@ -9,16 +9,17 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: #04182e;
 }
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #1b3e1d;
+  border-color: #8dad62;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
@@ -43,7 +44,7 @@ html {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
 }
 
 button.accept-policy {
@@ -70,20 +71,34 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-
 /* style for itemtobesold partial*/
 .sale-card-img {
-    margin: 0;
+  margin: 0;
 }
 
 .sale-card-footer-margin {
-    margin: 0;
+  margin: 0;
 }
 
+.item-quantity {
+  border: 1px solid #5a6268;
+  width: 3rem;
+  border-radius: 5px;
+  padding: 2px 3px 3px 2px;
+}
+
+.item-card a {
+  color: black;
+}
+
+.item-card > a :hover {
+  text-decoration: none;
+}
 
 /* Buttons style on items to be sold cards */
 .card-plus {
-    background-color: aquamarine;
-    border: none;
-    border-radius: 2px;
+  border-radius: 5px;
+}
+
+.card-minus {
 }

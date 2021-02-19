@@ -73,6 +73,13 @@ namespace RektaRetailApp.Web.ViewModel.Sales
 
         public decimal Price { get; set; }
 
+        public IDictionary<string, string> TagIds { get; set; }
+
+        public ItemSoldViewModel()
+        {
+            TagIds = new Dictionary<string, string>();
+        }
+
     }
 
     public class MakeASaleViewModel

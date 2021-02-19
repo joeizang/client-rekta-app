@@ -7,27 +7,11 @@
     {
         new ItemSoldViewModel()
         {
-            Id = 1, ItemName = "Rice & Stew", Price = 400m, Quantity = 20d, ProductImage = ""
+            Id = 1, ItemName = "Rice and Stew", Price = 400m, Quantity = 20d, ProductImage = ""
         },
         new ItemSoldViewModel()
         {
-            Id = 2, ItemName = "Pounded Yam & Draw Soup", Price = 400m, Quantity = 20d, ProductImage = ""
-        },
-        new ItemSoldViewModel()
-        {
-            Id = 3, ItemName = "Shawarma", Price = 800m, Quantity = 20d, ProductImage = ""
-        },
-        new ItemSoldViewModel()
-        {
-            Id = 4, ItemName = "Meat Pie", Price = 500m, Quantity = 20d, ProductImage = ""
-        },
-        new ItemSoldViewModel()
-        {
-            Id = 1, ItemName = "Rice & Stew", Price = 400m, Quantity = 20d, ProductImage = ""
-        },
-        new ItemSoldViewModel()
-        {
-            Id = 2, ItemName = "Pounded Yam & Draw Soup", Price = 400m, Quantity = 20d, ProductImage = ""
+            Id = 2, ItemName = "P Yam and Egusi", Price = 400m, Quantity = 20d, ProductImage = ""
         },
         new ItemSoldViewModel()
         {
@@ -36,11 +20,37 @@
         new ItemSoldViewModel()
         {
             Id = 4, ItemName = "Meat Pie", Price = 500m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 5, ItemName = "Fried Rice", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 6, ItemName = "Amala", Price = 400m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 7, ItemName = "Beer", Price = 800m, Quantity = 20d, ProductImage = ""
+        },
+        new ItemSoldViewModel()
+        {
+            Id = 8, ItemName = "Goat Head", Price = 500m, Quantity = 20d, ProductImage = ""
         }
     };
 }
 
-<h1>Make A Sale</h1>
+<div class="col-12 flex-row justify-content-between align-items-end">
+    <div class="col-md-4 mr-0">
+        <h1>Make A Sale</h1>
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+    <div class="col-md-5">
+        <partial name="_SearchBox" model="items" />
+    </div>
+</div>
 
 
 <hr />
@@ -96,12 +106,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    <script type="text/javascript">
-        var calculateQuantities = function() {
-            $(function() {
 
-            })
-        }
+    <script type="text/javascript">
+        $(function() {
+            const targetCard = $('a');
+            targetCard.click(function() {
+                const elementId = $(this).attr('id');
+                const amount = $(`#${elementId} p b`).text();
+                const itemName = $(`#${elementId} h6`).text();
+                console.log(`${itemName} ${amount}`);
+            });
+        });
     </script>
 }

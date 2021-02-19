@@ -1,36 +1,46 @@
 ﻿@model RektaRetailApp.Web.ViewModel.Sales.ItemSoldViewModel
 
+@{
+
+    var h6TagId = $"{Model.ItemName}{Model.Id}h6".Replace(" ","");
+    var linkId = $"{Model.ItemName}{Model.Id}link".Replace(" ", "");
+    var pPriceTagId = $"{Model.ItemName}{Model.Id}pPriceTag".Replace(" ", "");
+    var imgTagId = $"{Model.ItemName}{Model.Id}img".Replace(" ", "");
+
+    Model.TagIds.Add("anchorTag",$"{linkId}");
+    Model.TagIds.Add("h6Tag",$"{h6TagId}");
+    Model.TagIds.Add("pTag",$"{pPriceTagId}");
+    Model.TagIds.Add("imgTag", $"{imgTagId}");
+}
+
 
 <div class="col-sm-3">
-    <div class="card shadow-sm mb-5 bg-white rounded">
-        <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F4552934.jpg&w=596&h=399&c=sc&poi=face&q=85"
-             alt="" class="card-img-top" />
-        <div class="card-body">
-            @if (string.IsNullOrEmpty(Model?.ItemName))
-            {
-                <h6 class="card-title">
-                    No Product Name Yet!
-                </h6>
-            }
-            else
-            {
-                <h6 class="card-title">
-                    @Model?.ItemName
-                </h6>
-            }
-        </div>
-        <div class="d-flex justify-content-between card-footer sale-card-footer-margin">
-            <div class="col-3"><i class="bi-lightbulb"></i></div>
-            <div class="col-9 d-flex justify-content-center">
-                <button class="card-plus">
-                    <i class="bi-plus"></i>
-                </button>
-                <p></p>
-                <button class="card-minus">
-                    <i class="bi-dash"></i>
-                </button>
+    <div class="card shadow mb-5 bg-white rounded">
+        <a href="#" id="@linkId" style="text-decoration: none; text-align: center;">
+            <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F4552934.jpg&w=596&h=399&c=sc&poi=face&q=85"
+                 alt="" class="card-img-top" id="@imgTagId" />
+
+            <div class="card-body mt-0 pt-0 pb-1">
+                @if (string.IsNullOrEmpty(Model?.ItemName))
+                {
+                    <h6 class="card-title">
+                        No Product Name Yet!
+                    </h6>
+                }
+                else
+                {
+                    <h6 class="card-title" id="@h6TagId">
+                        @Html.Encode(Model?.ItemName)
+                    </h6>
+
+                }
             </div>
-        </div>
+
+            <div class="d-flex justify-content-center card-footer sale-card-footer-margin pr-1 pl-1 pb-1 text-center">
+                <p class="item-price" id="@pPriceTagId">
+                    <b>@Model?.Price</b>
+                </p>
+            </div>
+        </a>
     </div>
 </div>
-

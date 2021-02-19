@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RektaRetailApp.Web.ViewModel;
 using RektaRetailApp.Web.ViewModel.Sales;
 using RektaRetailApp.Web.Commands.Sales;
 using RektaRetailApp.Web.Queries.Sales;
@@ -54,7 +53,7 @@ namespace RektaRetailApp.Web.Controllers
         public IActionResult ItemToBeSold()
         {
 
-            return PartialView();
+            return PartialView("_ItemToBeSold");
         }
 
         // POST: Sales/MakeASale
