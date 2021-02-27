@@ -1,12 +1,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RektaRetailApp.Web.ViewModel.Sales;
 using RektaRetailApp.Web.Commands.Sales;
 using RektaRetailApp.Web.Queries.Sales;
 using RektaRetailApp.Web.ViewModels;
+using RektaRetailApp.Web.ViewModels.OrderCart;
 
 namespace RektaRetailApp.Web.Controllers
 {
@@ -15,6 +17,8 @@ namespace RektaRetailApp.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<SalesController> _logger;
+        public string? OrderCartSessionId { get; set; }
+        public string OrderCartSessionTime = "_Time";
 
         public SalesController(IMediator mediator, ILogger<SalesController> logger)
         {
@@ -43,9 +47,11 @@ namespace RektaRetailApp.Web.Controllers
         }
 
         //GET: Sales/MakeASale
-        public IActionResult MakeASale()
+        public async Task<IActionResult> MakeASale(CancellationToken token)
         {
-            var saleViewModel = new MakeASaleViewModel();
+            var saleViewModel = await _mediator.Send(new MakeASaleQuery(),token).ConfigureAwait(false);
+            saleViewModel.OrderCart = new OrderCartViewModel();
+            HttpContext.Session.SetString("OrderCartSessionid",saleViewModel.OrderCart.OrderCartSessionId);
             return View(saleViewModel);
         }
 

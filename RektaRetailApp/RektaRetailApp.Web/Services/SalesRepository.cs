@@ -43,7 +43,7 @@ namespace RektaRetailApp.Web.Services
                 _db.Entry(product).State = EntityState.Modified;
             }
             //if there are any discounts then you can calculate before persisting.
-            sale.ProductsForSale.AddRange(products!);
+            //sale.ProductsForSale.AddRange(products!);
             await _set.AddAsync(sale, token).ConfigureAwait(false);
         }
 
@@ -78,7 +78,7 @@ namespace RektaRetailApp.Web.Services
             var parsedDate = DateTimeOffset.Parse(query.SearchTerm!);
             queryable = queryable.Where(s => s.SalesPersonId.Equals(query.SearchTerm) 
                                              || s.SaleDate.Equals(parsedDate) 
-                                             || s.GrandTotal.Equals(parsedTotal));
+                                             || s.Total.Equals(parsedTotal));
             queryable = queryable.OrderBy(x => x.SaleDate);
             var processedResult = await PagedList<Sale>.CreatePagedList(queryable,
                  query.PageNumber, query.PageSize, token).ConfigureAwait(false);

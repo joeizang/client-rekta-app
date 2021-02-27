@@ -17,6 +17,8 @@ namespace RektaRetailApp.Domain.Data
 
         public DbSet<Sale> Sales { get; set; } = default!;
 
+        public DbSet<OrderCart> OrderCarts { get; set; } = default!;
+
         public DbSet<Inventory> Inventories { get; set; } = default!;
 
         public DbSet<Customer> Customers { get; set; } = default!;
@@ -53,6 +55,8 @@ namespace RektaRetailApp.Domain.Data
 
             builder.Entity<Sale>()
                 .HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<OrderCart>()
+                .HasQueryFilter(x => x.IsDeleted);
             builder.Entity<Product>()
                 .HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Inventory>()
@@ -84,8 +88,9 @@ namespace RektaRetailApp.Domain.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Sale>()
-                .HasMany(s => s.ProductsForSale)
+                .HasOne(s => s.OrderCart)
                 .WithOne()
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Product>()
@@ -113,7 +118,7 @@ namespace RektaRetailApp.Domain.Data
 
 
             builder.Entity<Sale>()
-                .Property(s => s.GrandTotal)
+                .Property(s => s.Total)
                 .HasColumnType("decimal(12,2)");
             builder.Entity<Sale>()
                 .Property(s => s.SubTotal)

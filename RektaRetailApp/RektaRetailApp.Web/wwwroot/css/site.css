@@ -20,9 +20,9 @@ a {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #b2d41a;
+    border-color: #b2d41a;
 }
 
 /* Sticky footer styles
@@ -78,6 +78,7 @@ body {
 
 .sale-card-footer-margin {
   margin: 0;
+  background: #1b3e1d;
 }
 
 .item-quantity {
@@ -95,10 +96,6 @@ body {
   text-decoration: none;
 }
 
-/* Buttons style on items to be sold cards */
-.card-plus {
-  border-radius: 5px;
-}
-
-.card-minus {
+.item-price > span {
+    font-weight: bold;
 }

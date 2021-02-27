@@ -1,46 +1,38 @@
 ﻿@model RektaRetailApp.Web.ViewModel.Sales.ItemSoldViewModel
 
 @{
-
-    var h6TagId = $"{Model.ItemName}{Model.Id}h6".Replace(" ","");
+    var h6TagId = $"{Model.ItemName}{Model.Id}h6".Replace(" ", "");
     var linkId = $"{Model.ItemName}{Model.Id}link".Replace(" ", "");
     var pPriceTagId = $"{Model.ItemName}{Model.Id}pPriceTag".Replace(" ", "");
     var imgTagId = $"{Model.ItemName}{Model.Id}img".Replace(" ", "");
-
-    Model.TagIds.Add("anchorTag",$"{linkId}");
-    Model.TagIds.Add("h6Tag",$"{h6TagId}");
-    Model.TagIds.Add("pTag",$"{pPriceTagId}");
-    Model.TagIds.Add("imgTag", $"{imgTagId}");
 }
 
 
-<div class="col-sm-3">
-    <div class="card shadow mb-5 bg-white rounded">
-        <a href="#" id="@linkId" style="text-decoration: none; text-align: center;">
-            <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F4552934.jpg&w=596&h=399&c=sc&poi=face&q=85"
-                 alt="" class="card-img-top" id="@imgTagId" />
+<a id="@linkId" style="text-decoration: none; text-align: center;" class="col-sm-3 d-flex flex-wrap flex-grow-1">
+    <div class="card shadow mb-5 bg-white rounded mt-auto d-flex">
+        <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F4552934.jpg&w=596&h=399&c=sc&poi=face&q=85"
+            alt="" class="card-img-top" id="@imgTagId" />
 
-            <div class="card-body mt-0 pt-0 pb-1">
-                @if (string.IsNullOrEmpty(Model?.ItemName))
-                {
-                    <h6 class="card-title">
-                        No Product Name Yet!
-                    </h6>
-                }
-                else
-                {
-                    <h6 class="card-title" id="@h6TagId">
-                        @Html.Encode(Model?.ItemName)
-                    </h6>
+        <div class="card-body mt-0 pt-0 pb-1" id="@Model.Id">
+            @if (string.IsNullOrEmpty(Model?.ItemName))
+            {
+                <h6 class="card-title">
+                    No Product Name Yet!
+                </h6>
+            }
+            else
+            {
+                <h6 class="card-title" id="@h6TagId">
+                    @Html.Encode(Model?.ItemName)
+                </h6>
+            }
+        </div>
 
-                }
-            </div>
-
-            <div class="d-flex justify-content-center card-footer sale-card-footer-margin pr-1 pl-1 pb-1 text-center">
-                <p class="item-price" id="@pPriceTagId">
-                    <b>@Model?.Price</b>
-                </p>
-            </div>
-        </a>
+        <div class="d-flex justify-content-center card-footer sale-card-footer-margin pr-1 pl-1 pb-1 text-center"
+            style="background: #1b3e1d; color: #fff;">
+            <p class="item-price" id="@pPriceTagId">
+                <span>&#8358;</span> <b>@Model?.Price</b>
+            </p>
+        </div>
     </div>
-</div>
+</a>

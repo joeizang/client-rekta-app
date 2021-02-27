@@ -1,0 +1,37 @@
+﻿@model RektaRetailApp.Web.ViewModel.Sales.MakeASaleViewModel
+
+<div>
+    <form asp-action="MakeASale">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="SaleDate" class="control-label"><b>Date<span class="text-danger">*</span></b></label>
+            <input asp-for="SaleDate" class="form-control" value="@DateTimeOffset.Now.LocalDateTime" readonly />
+            <span asp-validation-for="SaleDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SubTotal" class="control-label"><b>Sub Total<span class="text-danger">*</span></b></label>
+            <input asp-for="SubTotal" class="form-control" />
+            <span asp-validation-for="SubTotal" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GrandTotal" class="control-label"><b>Grand Total<span class="text-danger">*</span></b></label>
+            <input asp-for="GrandTotal" class="form-control" />
+            <span asp-validation-for="GrandTotal" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CustomerName" class="control-label"><b>Customer Name<span class="text-danger">*</span></b></label>
+            <input asp-for="CustomerName" class="form-control" />
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CustomerPhoneNumber" class="control-label"><b>Customer Phone Number<span class="text-danger">*</span></b></label>
+            <input asp-for="CustomerPhoneNumber" class="form-control" />
+            <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary">Complete Sale  <i class="bi-cart-check-fill"></i></button>
+        </div>
+    </form>
+</div>

@@ -7,11 +7,11 @@
     {
         new ItemSoldViewModel()
         {
-            Id = 1, ItemName = "Rice and Stew", Price = 400m, Quantity = 20d, ProductImage = ""
+            Id = 1, ItemName = "Rice Stew", Price = 400m, Quantity = 20d, ProductImage = ""
         },
         new ItemSoldViewModel()
         {
-            Id = 2, ItemName = "P Yam and Egusi", Price = 400m, Quantity = 20d, ProductImage = ""
+            Id = 2, ItemName = "PYam Egusi", Price = 400m, Quantity = 20d, ProductImage = ""
         },
         new ItemSoldViewModel()
         {
@@ -40,14 +40,14 @@
     };
 }
 
-<div class="col-12 flex-row justify-content-between align-items-end">
-    <div class="col-md-4 mr-0">
-        <h1>Make A Sale</h1>
+<div class="col-12 d-flex">
+    <div class="col-md-4 d-flex flex-column">
+        <h3>Make A Sale</h3>
     </div>
-    <div class="col-md-3">
-        
+    <div class="col-md-3 d-flex flex-column">
+        <partial name="_SaleTypeDropdown" model="Model"/>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5 d-flex flex-column">
         <partial name="_SearchBox" model="items" />
     </div>
 </div>
@@ -63,40 +63,10 @@
             }
         </div>
     </div>
-    <div class="col-md-3 d-flex justify-content-center">
-        <form asp-action="MakeASale">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SaleDate" class="control-label"><b>Date<span class="text-danger">*</span></b></label>
-                <input asp-for="SaleDate" class="form-control" value="@DateTimeOffset.Now.LocalDateTime" readonly/>
-                <span asp-validation-for="SaleDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="SubTotal" class="control-label"><b>Sub Total<span class="text-danger">*</span></b></label>
-                <input asp-for="SubTotal" class="form-control"/>
-                <span asp-validation-for="SubTotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GrandTotal" class="control-label"><b>Grand Total<span class="text-danger">*</span></b></label>
-                <input asp-for="GrandTotal" class="form-control"/>
-                <span asp-validation-for="GrandTotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerName" class="control-label"><b>Customer Name<span class="text-danger">*</span></b></label>
-                <input asp-for="CustomerName" class="form-control"/>
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerPhoneNumber" class="control-label"><b>Customer Phone Number<span class="text-danger">*</span></b></label>
-                <input asp-for="CustomerPhoneNumber" class="form-control"/>
-                <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-group d-flex">
-                <button type="submit" class="btn btn-primary">Complete Sale  <i class="bi-cart-check-fill"></i></button>
-            </div>
-        </form>
+    <div class="col-md-3">
+        <partial name="_OrderCart" model="Model.OrderCart"/>
+        <hr />
+        @*<partial name="_ConsumableForm" model="Model"/>*@
     </div>
 </div>
 
@@ -108,13 +78,25 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="text/javascript">
+
+        let keys = [];
         $(function() {
             const targetCard = $('a');
-            targetCard.click(function() {
+            targetCard.click(function(evt) {
+                evt.preventDefault();
                 const elementId = $(this).attr('id');
-                const amount = $(`#${elementId} p b`).text();
+
+                const pTagId = $(`#${elementId} p`).attr('id');
+                //elements.push(`${elementId}-${pTagId}`);
+                const objKey = `${elementId}-${pTagId}`;
+                const amount = parseInt($(`#${elementId} #${pTagId} b`).text());
                 const itemName = $(`#${elementId} h6`).text();
-                console.log(`${itemName} ${amount}`);
+                let currentValue = localStorage.getItem(itemName);
+                if (currentValue === null) {
+                    localStorage.setItem(itemName, amount);
+                }
+                
+
             });
         });
     </script>

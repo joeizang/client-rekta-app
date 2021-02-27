@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RektaRetailApp.Domain.Data;
@@ -9,15 +10,16 @@ using RektaRetailApp.Domain.Data;
 namespace RektaRetailApp.Web.Migrations
 {
     [DbContext(typeof(RektaContext))]
-    partial class RektaContextModelSnapshot : ModelSnapshot
+    [Migration("20210221233023_AddOrderCart")]
+    partial class AddOrderCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -473,9 +475,6 @@ namespace RektaRetailApp.Web.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<bool>("CloseCart")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -483,15 +482,14 @@ namespace RektaRetailApp.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("EmptyCart")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("OrderCartSessionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("SaleId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SalesStaffId")
                         .IsRequired()
@@ -511,6 +509,9 @@ namespace RektaRetailApp.Web.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SaleId")
+                        .IsUnique();
 
                     b.HasIndex("SalesStaffId");
 
@@ -816,9 +817,6 @@ namespace RektaRetailApp.Web.Migrations
 
                     b.HasIndex("ModeOfPaymentId");
 
-                    b.HasIndex("OrderCardId")
-                        .IsUnique();
-
                     b.HasIndex("SaleDate");
 
                     b.HasIndex("SalesPersonId");
@@ -1040,11 +1038,19 @@ namespace RektaRetailApp.Web.Migrations
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.OrderCart", b =>
                 {
+                    b.HasOne("RektaRetailApp.Domain.DomainModels.Sale", "Sale")
+                        .WithOne("OrderCart")
+                        .HasForeignKey("RektaRetailApp.Domain.DomainModels.OrderCart", "SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RektaRetailApp.Domain.DomainModels.ApplicationUser", "SalesStaff")
                         .WithMany()
                         .HasForeignKey("SalesStaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Sale");
 
                     b.Navigation("SalesStaff");
                 });
@@ -1115,12 +1121,6 @@ namespace RektaRetailApp.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RektaRetailApp.Domain.DomainModels.OrderCart", "OrderCart")
-                        .WithOne()
-                        .HasForeignKey("RektaRetailApp.Domain.DomainModels.Sale", "OrderCardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("RektaRetailApp.Domain.DomainModels.ApplicationUser", "SalesPerson")
                         .WithMany()
                         .HasForeignKey("SalesPersonId")
@@ -1134,8 +1134,6 @@ namespace RektaRetailApp.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("ModeOfPayment");
-
-                    b.Navigation("OrderCart");
 
                     b.Navigation("SalesPerson");
 
@@ -1162,6 +1160,11 @@ namespace RektaRetailApp.Web.Migrations
                     b.Navigation("Price");
 
                     b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Sale", b =>
+                {
+                    b.Navigation("OrderCart");
                 });
 
             modelBuilder.Entity("RektaRetailApp.Domain.DomainModels.Supplier", b =>

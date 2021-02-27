@@ -53,12 +53,12 @@ namespace RektaRetailApp.Web.Commands.Sales
             {
                 var include = new Expression<Func<Sale, object>>[]
                 {
-                    x => x.ProductsForSale
+                    x => x.OrderCart!
                 };
                 await _repo.CreateSale(request, cancellationToken).ConfigureAwait(false);
                 await _repo.SaveAsync(cancellationToken).ConfigureAwait(false);
                 var thisSale = await _repo.GetOneBy(cancellationToken, include, s => s.SaleDate.Equals(request.SaleDate),
-                    s => s.GrandTotal.Equals(request.GrandTotal), s => s.SubTotal.Equals(request.SubTotal))
+                    s => s.Total.Equals(request.GrandTotal), s => s.SubTotal.Equals(request.SubTotal))
                     .ConfigureAwait(false);
                 var sale = _mapper.Map<SaleViewModel>(thisSale);
                 var result = new Response<SaleViewModel>(sale, ResponseStatus.Success);

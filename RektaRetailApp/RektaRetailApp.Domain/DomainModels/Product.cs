@@ -46,12 +46,15 @@ namespace RektaRetailApp.Domain.DomainModels
 
         public Inventory? Inventory { get; set; }
 
+        [ForeignKey(nameof(Inventory))]
         public int InventoryId { get; set; }
 
         public ProductPrice? Price { get; set; }
 
+        [ForeignKey(nameof(Price))]
         public int ProductPriceId { get; set; }
 
+        [ForeignKey(nameof(Supplier))]
         public int SupplierId { get; set; }
 
         public Supplier? Supplier { get; set; }

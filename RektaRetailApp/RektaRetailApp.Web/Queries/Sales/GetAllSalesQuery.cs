@@ -50,7 +50,7 @@ namespace RektaRetailApp.Web.Queries.Sales
                 {
                     var saleViewModel = new SaleViewModel
                     {
-                        GrandTotal = sale.GrandTotal,
+                        GrandTotal = sale.Total,
                         Id = sale.Id,
                         SalesPerson = sale.SalesPersonId,
                         SaleDate = sale.SaleDate,
@@ -58,8 +58,10 @@ namespace RektaRetailApp.Web.Queries.Sales
                         TypeOfSale = sale.TypeOfSale
                     };
 
-                    foreach (var product in sale.ProductsForSale)
+                    List<ProductForSale>? productsForSale = sale?.OrderCart?.OrderedItems;
+                    for (int i = 0; i < productsForSale?.Count; i++)
                     {
+                        ProductForSale? product = productsForSale[i];
                         var item = new ItemSoldViewModel
                         {
                             Id = product.Id,

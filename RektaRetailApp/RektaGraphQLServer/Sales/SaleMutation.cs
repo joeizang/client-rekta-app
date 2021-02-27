@@ -28,14 +28,14 @@ namespace RektaGraphQLServer.Sales
             var sale = new Sale
             {
                 SaleDate = input.SaleDate,
-                GrandTotal = input.GrandTotal,
+                Total = input.GrandTotal,
                 SubTotal = input.SubTotal,
                 CustomerName = input.CustomerName,
                 CustomerPhoneNumber = input.CustomerPhoneNumber,
                 SalesPersonId = input.SalesPersonId,
                 ModeOfPayment = input.TypeOfPayment,
                 TypeOfSale = input.TypeOfSale,
-                ProductsForSale = products
+                //ProductsForSale = products
             };
 
             context.Sales.Add(sale);

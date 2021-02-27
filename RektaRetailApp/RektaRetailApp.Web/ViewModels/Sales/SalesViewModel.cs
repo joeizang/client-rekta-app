@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using RektaRetailApp.Domain.DomainModels;
 using RektaRetailApp.Web.ViewModel.Product;
+using RektaRetailApp.Web.ViewModels.OrderCart;
 
 namespace RektaRetailApp.Web.ViewModel.Sales
 {
@@ -73,13 +75,6 @@ namespace RektaRetailApp.Web.ViewModel.Sales
 
         public decimal Price { get; set; }
 
-        public IDictionary<string, string> TagIds { get; set; }
-
-        public ItemSoldViewModel()
-        {
-            TagIds = new Dictionary<string, string>();
-        }
-
     }
 
     public class MakeASaleViewModel
@@ -98,9 +93,16 @@ namespace RektaRetailApp.Web.ViewModel.Sales
 
         public decimal SubTotal { get; set; }
 
+        public string? SaleType { get; set; }
+
+        public List<SelectListItem> SaleTypes { get; set; }
+
+        public OrderCartViewModel? OrderCart { get; set; }
+
         public MakeASaleViewModel()
         {
             ProductsOnSale = new List<ItemSoldViewModel>();
+            SaleTypes = new List<SelectListItem>();
         }
     }
 }

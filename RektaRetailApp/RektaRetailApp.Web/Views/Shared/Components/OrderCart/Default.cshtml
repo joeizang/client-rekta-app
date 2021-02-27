@@ -1,0 +1,18 @@
+﻿@model IEnumerable<RektaRetailApp.Web.ViewModels.OrderCart.OrderCartViewModel>
+
+<div>
+    <h3>Current Cart Contents</h3>
+    @if (Model.Any())
+    {
+        <div class="p-2" style="border-radius: 5px; background: #fd7e14; width: 4rem; height: 3rem;">
+            <span class="badge badge-dark">@Model.Count()</span>
+            <i style="font-size: 1.4rem" class="bi-cart-plus-fill"></i>
+        </div>
+    }
+    else
+    {
+        <div class="p-2" style="border-radius: 5px; background: #fd7e14; width: 4rem; height: 3rem;">
+            <i style="font-size: 1.4rem" class="bi-cart-x"></i>
+        </div>
+    }
+</div>

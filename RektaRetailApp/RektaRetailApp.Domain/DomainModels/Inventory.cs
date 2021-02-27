@@ -28,9 +28,10 @@ namespace RektaRetailApp.Domain.DomainModels
 
         public UnitMeasure? UnitAmount { get; set; }
 
+        [Column(TypeName = "decimal(9,2)")]
         public decimal TotalCostValue { get; private set; }
 
-        public float Quantity { get; set; }
+        public double Quantity { get; set; }
 
         public bool Verified { get; set; }
 
@@ -57,6 +58,7 @@ namespace RektaRetailApp.Domain.DomainModels
             }
         }
 
+        [Column(TypeName = "decimal(9,2)")]
         public decimal TotalRetailValue { get; private set; }
 
         public float GetCurrentNumberOfProductsInStock(Func<object, bool>? filter)

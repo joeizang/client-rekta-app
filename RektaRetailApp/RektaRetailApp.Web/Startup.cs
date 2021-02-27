@@ -45,6 +45,13 @@ namespace RektaRetailApp.Web
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<RektaContext>();
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddSession(opt =>
+            {
+                opt.Cookie.Name = "_Rekta";
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.IsEssential = true;
+            });
 
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddAutoMapper(typeof(Startup).Assembly);
@@ -84,6 +91,8 @@ namespace RektaRetailApp.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

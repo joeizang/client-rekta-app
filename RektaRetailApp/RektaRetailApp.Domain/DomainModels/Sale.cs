@@ -13,7 +13,7 @@ namespace RektaRetailApp.Domain.DomainModels
     {
         public Sale()
         {
-            ProductsForSale = new List<ProductForSale>();
+            
         }
 
         public DateTimeOffset SaleDate { get; set; }
@@ -23,9 +23,11 @@ namespace RektaRetailApp.Domain.DomainModels
 
         public ApplicationUser? SalesPerson { get; set; }
 
+        [Column(TypeName = "decimal(9,2)")]
         public decimal SubTotal { get; set; }
 
-        public decimal GrandTotal { get; set; }
+        [Column(TypeName = "decimal(9,2)")]
+        public decimal Total { get; set; }
 
         [ForeignKey(nameof(TypeOfSale))]
         public string TypeOfSaleId { get; set; } = null!;
@@ -43,6 +45,9 @@ namespace RektaRetailApp.Domain.DomainModels
 
         [StringLength(50)] public string? CustomerPhoneNumber { get; set; }
 
-        public List<ProductForSale> ProductsForSale { get; set; }
+        public OrderCart OrderCart { get; set; } = null!;
+
+        [ForeignKey(nameof(OrderCart))]
+        public int OrderCardId { get; set; }
     }
 }
